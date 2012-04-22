@@ -55,6 +55,23 @@ class Lodge::CheckinsController < ApplicationController
 		format.html do
 			redirect_to lodge_home_list_url, :notice => 'done'
 		end
+		
+		format.js do
+			#deleting values not meant to be saved
+			params[:checkin].delete(:discount)
+			params[:checkin].delete(:total_per_day)
+
+			#save customer
+			@customer = Customer.create(params[:checkin][:customer])
+			params[:checkin].delete(:customer)
+
+			@checkin = Checkin.new(params[:checkin])
+			@checkin.from_date = Time.new(@checkin.from_date.year,@checkin.from_date.month,@checkin.from_date.day,params[:date][:hour],params[:date][:minute],0,Time.now.utc_offset)
+			@checkin.customer = @customer
+			@checkin.save
+				
+		end
+
 	 end
   end
 

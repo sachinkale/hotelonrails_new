@@ -39,8 +39,6 @@
         - c = Checkin.new
         - c.room = r
         - c.rate = r.room_type.base_rate
-        - c.from_date = Date.today
-        - c.to_date = Date.today + 1.day
         =render :partial => "lodge/checkins/new", :locals => {:room => r, :checkin => c}
       
 
