@@ -1,6 +1,6 @@
 h1. Hotelonrails New
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+~Work in Progress~ Improved version of https://github.com/sachinkale/hotelonrails 
 
 h2. More Information
 
