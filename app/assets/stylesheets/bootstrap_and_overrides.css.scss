@@ -1,6 +1,18 @@
 // Set the correct sprite paths
-$iconSpritePath: image-path('glyphicons-halflings.png');
-$iconWhiteSpritePath: image-path('glyphicons-halflings-white.png');
-@import "bootstrap";
+//$iconSpritePath: image-path('glyphicons-halflings.png');
+//$iconWhiteSpritePath: image-path('glyphicons-halflings-white.png');
+//@import "bootstrap";
 body { padding-top: 60px; }
-@import "bootstrap-responsive";
+//@import "bootstrap-responsive";
+.tab-content{border:1px solid #eee;min-height:1000px;
+-webkit-border-radius: 0 0 6px 6px;
+  -moz-border-radius: 0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
+
+}
+.tabbable .nav-tabs{
+	background-color:#eee;
+}
+.tab-pane{
+	padding:20px;
+}

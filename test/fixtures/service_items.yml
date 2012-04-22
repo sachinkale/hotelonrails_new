@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  service_id: 1
+  amount: 1
+  bill_number: 1
+  checkin_id: 1
+  room_id: 1
+  date: 2012-04-09 14:39:09
+  notes: MyText
+
+two:
+  service_id: 1
+  amount: 1
+  bill_number: 1
+  checkin_id: 1
+  room_id: 1
+  date: 2012-04-09 14:39:09
+  notes: MyText

@@ -1,0 +1,18 @@
+
+.span4
+  = form_for @checkin,:url => lodge_checkins_path, :html => {:class => "well form-horizontal"}  do |f|
+    - if @checkin.errors.any?
+      #error_explanation
+        %h2
+          = pluralize(@checkin.errors.count, "error")
+          prohibited this checkin from being saved:
+        %ul
+          - @checkin.errors.full_messages.each do |msg|
+            %li= msg
+    %fieldset
+      %legend Select Room
+      .control-group
+        %label Select Room Type
+      .conrols
+        =select_tag :room_type, options_for_select(["non ac", "ac", "deluxe"])
+   

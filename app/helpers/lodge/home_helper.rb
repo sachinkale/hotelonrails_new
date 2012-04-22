@@ -1,0 +1,2 @@
+module Lodge::HomeHelper
+end

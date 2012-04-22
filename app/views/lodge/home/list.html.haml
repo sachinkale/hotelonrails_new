@@ -1,0 +1,49 @@
+#room_tabs.tabbable.tabs-left
+  %ul.nav.nav-tabs
+    %li.active
+      %a{:href => "#overview", "data-toggle" => "tab"}
+        Overview
+    -@rooms.each do |r|
+      %li
+        =link_to "#room#{r.number}",  {"data-toggle" => "tab"} do
+          - if not r.status.nil?
+            %i.icon-user
+          ="#{r.number}"
+
+  .tab-content{:style => "display:block"}
+    .tab-pane.active{:id => "overview"}
+      .span4
+        .well
+          %h2 Available Rooms
+          =select_tag "room_type", options_from_collection_for_select(@room_types,:id,:name_base_rate), :class => "span3"
+          -@room_types.each_index do |i|
+            .room_type{:style => "#{i == 0 ? '' : 'display:none'}", :id => "rt#{@room_types[i].id}"}
+              - j = 0
+              %table.table.table-striped
+                -@room_types[i].vacant_rooms.each do |r|
+                  - j = j + 1
+                  %tr
+                    %td
+                      #{j}
+                    %td
+                      %h4
+                        =r.number
+                    %td
+                      %button.checkin-now.btn.btn-primary.pull-right{:id => "checkin#{r.id}"}
+                        Checkin
+
+
+
+    -@rooms.each do |r|
+      .tab-pane.room_tab{:id => "room#{r.number}"}
+        - c = Checkin.new
+        - c.room = r
+        - c.rate = r.room_type.base_rate
+        - c.from_date = Date.today
+        - c.to_date = Date.today + 1.day
+        =render :partial => "lodge/checkins/new", :locals => {:room => r, :checkin => c}
+      
+
+.tax.hidden
+  10
+

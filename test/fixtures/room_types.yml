@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  base_rate: 1
+  facilities: MyText
+
+two:
+  name: MyString
+  base_rate: 1
+  facilities: MyText

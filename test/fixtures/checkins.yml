@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  from_date: 2012-04-09 14:03:33
+  to_date: 2012-04-09 14:03:33
+  status: MyString
+  room_id: 1
+  notes: MyText
+
+two:
+  from_date: 2012-04-09 14:03:33
+  to_date: 2012-04-09 14:03:33
+  status: MyString
+  room_id: 1
+  notes: MyText

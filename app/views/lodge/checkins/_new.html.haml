@@ -1,0 +1,73 @@
+.span6
+  = form_for checkin,:url => lodge_checkins_path, :html => {:class => "well form-horizontal"}, :remote => true  do |f|
+    - if checkin.errors.any?
+      #error_explanation
+        %h2
+          = pluralize(checkin.errors.count, "error")
+          prohibited this checkin from being saved:
+        %ul
+          - checkin.errors.full_messages.each do |msg|
+            %li= msg
+    -f.fields_for Customer.new do |c|
+      %fieldset
+        %legend Add Guest
+        .control-group
+          %label.control-label Name
+          .controls
+            =c.text_field "name",:placeholder => "First-Name Last-Name", :required => true
+        .control-group
+          %label.control-label Address
+          .controls
+            =c.text_area "address",:placeholder => "Address", :required => true, :rows => 3
+        .control-group
+          %label.control-label Phone
+          .controls
+            =c.telephone_field "phone",:placeholder => "Mobile", :required => true
+        .control-group
+          %label.control-label Photo
+          .controls
+            %input#fileInput.input-file{:type => "file"}
+      %legend Rate Details
+      .control-group
+        %label.control-label Base Rate
+        .controls
+          .input-prepend.input-append
+            <span class='add-on'>Rs.</span>#{text_field_tag 'base_rate',room.room_type.base_rate, :size => 16, :class =>'span1 disabled base_rate', :disabled => true}<span class='add-on'>.00</span>
+      .control-group
+        %label.control-label Extra Person Amount
+        .controls
+          .input-prepend.input-append
+            <span class='add-on'>Rs.</span>#{f.text_field 'extra_person', :size => 16, :class =>'span1 extra_person'}<span class='add-on'>.00</span>
+
+      .control-group
+        %label.control-label Discount
+        .controls
+          .input-prepend.input-append
+            <span class='add-on'>&nbsp;&nbsp;&nbsp;</span>#{f.text_field 'discount', :size => 16, :class =>'span1 discount'}<span class='add-on'>%</span>
+      .control-group
+        %label.control-label Actual Rate
+        .controls
+          .input-prepend.input-append
+            <span class='add-on'>Rs.</span>#{f.text_field 'rate', :size => 16, :class =>'span1 rate'}<span class='add-on'>.00</span>
+      .control-group
+        %label.control-label Total Amount with Tax
+        .controls
+          .input-prepend.input-append
+            <span class='add-on'>Rs.</span>#{f.text_field 'total_per_day', :size => 16, :disabled => :disabled, :class => 'total_per_day span1 disabled'}<span class='add-on'>.00</span>
+      %legend Checkin Details
+      .control-group
+        %label.control-label Checkin Date 
+        .controls.form-inline
+          =f.text_field :from_date, :class => 'span2', "data-datepicker" => :datepicker
+          Time
+          =select_hour( Time.now,{},{ :class => "span1 inline"})
+          \:
+          =select_minute( Time.now,{},{:class => "span1 inline"})
+      .control-group
+        %label.control-label Checkout Date
+        .controls
+          =f.text_field :to_date, :class => 'span2', "data-datepicker" => :datepicker
+          =f.hidden_field :room_id
+
+      .form-actions
+        =submit_tag "Checkin", {:class => "btn btn-large btn-primary span3"}
