@@ -1,0 +1,62 @@
+ 
+.checkin.span8{:id => "checkin-#{checkin.id}"}
+  %h3 Checkin Details
+  .well
+    %p
+      Name: 
+      %b=checkin.customer.name
+      %span.pull-right
+        Checked in on:
+        =checkin.from_date
+    %table.table.table-bordered
+      %tr
+        %th Room
+        %th Rate
+        %th Discount
+        %th Applied Rate
+        %th Extra Person
+        %th Tax
+        %th Total Per Day
+        %th No of Days
+        %th Amount
+      -if checkin.invoice.nil?
+        %tr
+          %td 
+            =checkin.room.number
+          %td
+            =checkin.room.room_type.base_rate
+          %td
+            =checkin.discount
+          %td
+            =checkin.rate
+          %td
+            =checkin.extra_person
+          %td
+            10
+          %td
+            =checkin.total_per_day
+          %td
+            =checkin.no_of_days
+          %td
+            =checkin.total
+  %h3 Other Charges
+  - Service.all.each do |s|
+    .well.services{:id => "service-#{s.id}"}
+      %h4
+        =s.name
+        %a.btn.btn-mini.btn-primary.pull-right.add_service{:href => "##{s.id}"}
+          %i.icon-plus-sign.icon-white
+          Add
+      %table.table.table-bordered
+        %tr
+          %th
+          %th Date
+          %th Bill Number
+          %th Details
+          %th Amount
+        =render :partial => "lodge/service_items/service_item", :collection => checkin.list_items(s)
+      .total.pull-right
+        =s.name
+        Total:
+        %b.service_total
+          =checkin.list_item_total(s)

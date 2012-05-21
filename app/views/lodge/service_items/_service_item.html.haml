@@ -1,0 +1,13 @@
+%tr{:id => "service_item_#{service_item.id}"}
+  %td
+    %a.delete_service_item{:href => "#"}
+      %i.icon-remove
+  %td
+    =service_item.updated_at
+  %td
+    =service_item.bill_number
+  %td
+    =service_item.notes
+  %td
+    =service_item.amount
+
