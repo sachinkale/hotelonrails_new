@@ -6,9 +6,11 @@
     -@rooms.each do |r|
       %li
         =link_to "#room#{r.number}",  {"data-toggle" => "tab"} do
+
+          ="#{r.number}"
           - if not r.status.nil?
             %i.icon-user
-          ="#{r.number}"
+            =r.current_checkin.customer.name
 
   .tab-content{:style => "display:block"}
     .tab-pane.active{:id => "overview"}
@@ -36,12 +38,70 @@
 
     -@rooms.each do |r|
       .tab-pane.room_tab{:id => "room#{r.number}"}
-        - c = Checkin.new
-        - c.room = r
-        - c.rate = r.room_type.base_rate
-        =render :partial => "lodge/checkins/new", :locals => {:room => r, :checkin => c}
+        -if r.status.nil?
+          - c = Checkin.new
+          - c.room = r
+          - c.rate = r.room_type.base_rate
+          =render :partial => "lodge/checkins/new", :locals => {:room => r, :checkin => c}
+        -else
+          =render :partial => "lodge/checkins/show",:locals => {:checkin => r.current_checkin}
       
 
 .tax.hidden
   10
+#service_form.modal.hide.fade
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} x
+    %h3
+      Add Item
+  .modal-body
+    =form_for :service_item, :url => lodge_add_service_item_url,:remote => true, :html => {:id => "service_item_form", :class => "form-horizontal"} do |f|
+      =f.hidden_field :service_id
+      =f.hidden_field :checkin_id 
+      .control-group
+        %label.control-label Amount
+        .controls
+          =f.text_field :amount
+      .control-group
+        =f.label :bill_number, :class => "control-label"
+        .controls
+          =f.text_field :bill_number
+      .control-group
+        =f.label :date, :class => "control-label"
+        .controls.form-inline
+          =select_day( Date.today,{},{ :class => "span1 inline"})
+          -
+          =select_month( Date.today,{},{ :class => "span1 inline"})
+          &nbsp;
+          Time
+          =select_hour( Time.now,{},{ :class => "span1 inline"})
+          \:
+          =select_minute( Time.now,{},{:class => "span1 inline"})
+
+
+      .control-group
+        =f.label :Notes,:class => "control-label"
+        .controls
+          =f.text_area :notes, :rows => 5
+  .modal-footer
+    =image_tag "smallloading.gif",:class => "pull-left hide", :id => "item_loader"
+    %a.btn{"data-dismiss" => "modal"} Close
+    %a#save_service_item.btn.btn-primary Save Changes
+
+  
+ 
+#delete_service.modal.hide.fade
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} x
+    %h3
+      Delete Item
+  .modal-body
+    =form_tag lodge_delete_service_item_url, :id => "delete_service_item_form", :method => :delete, :remote => true do
+      =hidden_field_tag "delete_service_item_id"
+    Are you sure?
+  .modal-footer
+    =image_tag "smallloading.gif",:class => "pull-left hide", :id => "delete_item_loader"
+    %a.btn{"data-dismiss" => "modal"} Cancel
+    %a#delete_service_item.btn.btn-primary Delete
+
 

@@ -113,37 +113,6 @@ class Lodge::CheckinsController < ApplicationController
     end
   end
  
-  def split_room
-    line_item = LineItem.find(params[:splitroom_line_item_id].sub(/\D+/,'').to_i)
-    flag = 0
-    if line_item.freez
-      flag = 1
-    else
-      checkin = Checkin.new
-      checkin.company = line_item.checkin.company if not line_item.checkin.company.nil?
-      checkin.save!
-      checkin.guests << line_item.checkin.guests
-      line_item.checkin.service_items.each do |si|
-        if si.room_id == line_item.room_id
-          si.checkin = checkin
-          si.save!
-        end
-      end
-      line_item.checkin = checkin
-      line_item.save!
-      checkin.update_fromdate
-    end
-    respond_to do |format|
-      format.html {
-        if flag == 1
-          flash[:notice] = "Cannot Split Room as the room is shifted"
-        else
-          flash[:notice] = "Splitted Room as a new checkin successfully"
-        end
-        redirect_to user_root_url
-      }
-    end
-  end
 
   def shift_room
 

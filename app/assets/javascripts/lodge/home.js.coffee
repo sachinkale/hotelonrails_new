@@ -12,21 +12,18 @@ jQuery ->
 		$('#rt' + $(@).find('option:selected').val()).show()
 
 	#populate form under room tab pane
-	$('a[data-toggle="tab"]').on 'shown',  (e) ->
+	$('a[data-toggle="tab"]').on 'shown',(e) ->
 		href = $(e.target).attr('href')
-
-		#calculate for current view
 		calculate_room_total()
 
-		#attach events
-		$(href).find('.discount').on 'change', ->
-			update_rate_and_calculate_room_total()
-		$(href).find('.extra_person').on 'change', ->
-		 	update_rate_and_calculate_room_total()
-		$(href).find('.rate').on 'change', ->
-			calculate_room_total()
+	#attach events
+	$('.discount').on 'change', ->
+		update_rate_and_calculate_room_total()
+	$('.rate').on 'change', ->
+		calculate_room_total()
+	$('.extra_person').on 'change', ->	
+		update_rate_and_calculate_room_total()
 
-		
 	update_rate_and_calculate_room_total = ->
 		base_rate = parseInt $('.tab-pane.active').find('.base_rate').val()
 		extra_person = parseInt $('.tab-pane.active').find('.extra_person').val()
@@ -62,5 +59,22 @@ jQuery ->
 
 	#activate room tabs
   $('#room_tabs').tab('show')
+
+	$('.add_service').click ->
+		$('#service_item_service_id').val($(@).attr('href').replace('#',''))
+		$('#service_item_checkin_id').val($(@).parents('.checkin').attr('id').replace('checkin-',''))
+		$('#service_form').modal 'show' 
+		return false
+
+	$('#save_service_item').click ->
+		$('#item_loader').show()
+		$('#service_item_form').submit()
+
+	$('.delete_service_item').click ->
+		$('#delete_service_item_id').val($(@).parents('tr').attr('id').replace('service_item_',''))
+		$('#delete_service').modal 'show'
+	$('#delete_service_item').click ->
+		$('#delete_item_loader').show()
+		$('#delete_service_item_form').submit()
 
 	

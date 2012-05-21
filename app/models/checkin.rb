@@ -10,12 +10,13 @@ class Checkin < ActiveRecord::Base
 	belongs_to :customer
 	belongs_to :room
 	belongs_to :invoice
+	has_many :service_items
 
 	#set default values
 	def init
-		self.extra_person = 0
-		self.from_date = Date.today
-		self.to_date = Date.today + 1.day
+		self.extra_person = 0 if self.extra_person.nil?
+		self.from_date = Date.today if self.from_date.nil?
+		self.to_date = Date.today + 1.day if self.to_date.nil?
 	end
 
 	#block room as occupied
@@ -23,13 +24,46 @@ class Checkin < ActiveRecord::Base
 		self.room.set_occupied
 	end
 
+	#caculate discount
 	def discount
 		return 0 if self.room.nil? or (not self.room.nil? and self.room.room_type.base_rate < self.rate)
 		((self.room.room_type.base_rate - self.rate)/self.room.room_type.base_rate) * 100
 	end
 
+	#total_per_day 
 	def total_per_day
 		self.rate + self.rate * 0.10 + (self.extra_person||0)
 	end
 
+	#no_of_days
+	def no_of_days
+		n = 0
+ 		if self.status.nil?
+			n = n + (Date.today - from_date.to_date).to_i
+			todate = Date.today
+		else
+			n = n + (self.checkout_date.to_date - from_date.to_date).to_i
+			todate = self.checkout_date
+		end
+
+ 	  n = n + 1 if self.from_date.to_time.hour < APP_CONFIG['hotel_checkout_hour'] 
+
+    n = n + 1 if todate.to_time.hour > APP_CONFIG['hotel_checkout_hour'] 
+
+
+
+		return n 
+	end
+
+	def list_items(service)
+		self.service_items.where("service_id = #{service.id}")
+	end
+
+	def list_item_total(service)
+		self.service_items.where("service_id = #{service.id}").sum(:amount)
+	end
+
+	def total
+		total_per_day * no_of_days
+	end
 end
