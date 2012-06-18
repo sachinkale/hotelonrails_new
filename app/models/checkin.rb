@@ -11,6 +11,7 @@ class Checkin < ActiveRecord::Base
 	belongs_to :room
 	belongs_to :invoice
 	has_many :service_items
+	has_many :payments, :as => :owner
 
 	#set default values
 	def init
@@ -50,20 +51,30 @@ class Checkin < ActiveRecord::Base
 
     n = n + 1 if todate.to_time.hour > APP_CONFIG['hotel_checkout_hour'] 
 
-
-
 		return n 
 	end
 
+	#list_items_by_service
 	def list_items(service)
 		self.service_items.where("service_id = #{service.id}")
 	end
 
+	#total_items_by_service
 	def list_item_total(service)
 		self.service_items.where("service_id = #{service.id}").sum(:amount)
 	end
 
+	#room_charges_total
 	def total
 		total_per_day * no_of_days
+	end
+
+	#other_charges_total
+	def total_other_charges
+		self.service_items.sum(:amount)
+	end
+
+	def grand_total
+		self.total + self.total_other_charges
 	end
 end

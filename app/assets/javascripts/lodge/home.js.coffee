@@ -66,10 +66,12 @@ jQuery ->
 		$('#service_form').modal 'show' 
 		return false
 
+	#add service item
 	$('#save_service_item').click ->
 		$('#item_loader').show()
 		$('#service_item_form').submit()
 
+	#delete service item
 	$('.delete_service_item').click ->
 		$('#delete_service_item_id').val($(@).parents('tr').attr('id').replace('service_item_',''))
 		$('#delete_service').modal 'show'
@@ -77,4 +79,13 @@ jQuery ->
 		$('#delete_item_loader').show()
 		$('#delete_service_item_form').submit()
 
-	
+	#add payment
+	$('.add_payment').click ->
+		$('#pay_dialog').modal 'show'
+		$('#payment_owner_id').val($(@).parents('.checkin').attr('id').replace('checkin-',''))
+		$('#payment_owner_type').val("Checkin")
+
+	$('#add_payment_submit').click ->
+		$('#add_payment_loader').show()
+		$('#new_payment').submit()
+

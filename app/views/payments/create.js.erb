@@ -1,0 +1,11 @@
+<%if @error %>
+	alert('<%= @error %>');
+<% else %>
+	str = "<tr id=<%= @payment.id %> class='payment_row'><td>";
+	str += '<%= link_to payment_path(@payment.id), :method => :delete, :remote => true do %>  <i class="icon-remove"></i><% end %>';
+	$('#checkin-<%= @payment.owner_id %> .payments table').append(str + "</td><td><%= @payment.updated_at %></td><td><%= @payment.payment_method.name %></td><td><%= @payment.amount %> </td></tr>");
+            
+	$('#add_payment_loader').hide();
+	$('#pay_dialog').modal('hide');
+	$('#checkin-<%= @checkin.id %> .payments .total_payments').html(<%= @checkin.payments.sum(:amount) %>);
+<% end %>

@@ -1,5 +1,11 @@
 $('#service_item_<%= @service_item.id %>').remove();
 $('#checkin-<%= @checkin.id %>').find('#service-<%= @service.id %> .service_total').text('<%= @checkin.list_item_total(@service) %>');
+
+$('#checkin-<%= @checkin.id %>').find('.other_charges').text(<%= @checkin.total_other_charges %>);
+
+$('#checkin-<%= @checkin.id %>').find('.grand_total').text(<%= @checkin.grand_total %>);
+
+
 $('#delete_item_loader').hide();
 $('#delete_service').modal('hide');
 $('#checkin-<%= @checkin.id %>').find('#service-<%= @service.id %> .service_total').effect('highlight',2000);

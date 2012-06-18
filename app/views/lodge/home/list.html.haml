@@ -105,3 +105,36 @@
     %a#delete_service_item.btn.btn-primary Delete
 
 
+#pay_dialog.modal.hide.fade
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} x
+    %h3 Add Payment
+  .modal-body
+    =form_for @payment, :remote => true do |f|
+      =f.select :payment_method_id, options_from_collection_for_select(PaymentMethod.all, :id, :name,2)
+      =f.text_field :amount
+      %span#total_remaining
+      =f.hidden_field :owner_id
+      =f.hidden_field :owner_type
+  .modal-footer
+    =image_tag "smallloading.gif",:class => "pull-left hide", :id => "add_payment_loader"
+    %a.btn{"data-dismiss" => "modal"} Cancel
+    %a#add_payment_submit.btn.btn-primary Add Payment
+
+#delete_pay_dialog.modal.hide.fade
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} x
+    %h3 Delete Payment
+  .modal-body
+    =form_for @payment, :remote => true do |f|
+      =f.select :payment_method_id, options_from_collection_for_select(PaymentMethod.all, :id, :name,2)
+      =f.text_field :amount
+      %span#total_remaining
+      =f.hidden_field :owner_id
+      =f.hidden_field :owner_type
+  .modal-footer
+    =image_tag "smallloading.gif",:class => "pull-left hide", :id => "add_payment_loader"
+    %a.btn{"data-dismiss" => "modal"} Cancel
+    %a#add_payment_submit.btn.btn-primary Add Payment
+
+

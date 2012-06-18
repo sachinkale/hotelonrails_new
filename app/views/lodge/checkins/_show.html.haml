@@ -8,6 +8,11 @@
       %span.pull-right
         Checked in on:
         =checkin.from_date
+        %a.btn.btn-mini.btn-primary.edit-checkin{:href => "##{checkin.id}"}
+          %i.icon-edit.icon-white 
+          %b
+           
+
     %table.table.table-bordered
       %tr
         %th Room
@@ -32,7 +37,7 @@
           %td
             =checkin.extra_person
           %td
-            10
+            10%
           %td
             =checkin.total_per_day
           %td
@@ -60,3 +65,49 @@
         Total:
         %b.service_total
           =checkin.list_item_total(s)
+  %h3 Total Charges          
+  .well.total_charges
+    %table.table.table-bordered
+      %tr
+        %th Room Charges
+        %td.room_charges
+          =checkin.total
+      %tr
+        %th Other Charges
+        %td.other_charges
+          =checkin.total_other_charges
+      %tr
+        %th Total
+        %td.grand_total
+          =checkin.grand_total
+          
+  %h3 
+    Payments
+   
+  .well.payments
+    %a.btn.btn-mini.btn-primary.add_payment.pull-right
+      %i.icon-plus-sign.icon-white 
+      Add
+    %table.table.table-bordered
+      %tr
+        %th
+        %th Date
+        %th Payment
+        %th Amount
+      -checkin.payments.each do |p|
+        %tr.payment_row{:id=>"#{p.id}"}
+          %td
+            =link_to payment_path(p.id), :method => :delete, :remote => true do
+              %i.icon-remove
+          %td
+            =p.updated_at
+          %td
+            =p.payment_method.name
+          %td
+            =p.amount
+    .total.pull-right
+      Payments Total:
+      %b.total_payments
+        =checkin.payments.sum(:amount)
+  =button_tag "Checkout", {:class => "btn btn-large btn-primary span3"}
+  =button_tag "Print Bill", {:class => "btn btn-large btn-primary span3"}

@@ -1,0 +1,6 @@
+<% if @error %>
+  alert '<%= @error %>'
+<% else %>
+  $('.payment_row[id=<%= params[:id] %>]').remove();
+	$('#checkin-<%= @checkin.id %> .payments .total_payments').html(<%= @checkin.payments.sum(:amount) %>);
+<% end %>

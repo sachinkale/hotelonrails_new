@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  payment_method_id: 1
+  amount: 1.5
+  owner_id: 1
+  owner_type: MyString
+
+two:
+  payment_method_id: 1
+  amount: 1.5
+  owner_id: 1
+  owner_type: MyString
