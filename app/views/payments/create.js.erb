@@ -8,4 +8,5 @@
 	$('#add_payment_loader').hide();
 	$('#pay_dialog').modal('hide');
 	$('#checkin-<%= @checkin.id %> .payments .total_payments').html(<%= @checkin.payments.sum(:amount) %>);
+	$('#checkin-<%= @checkin.id %> .total_pending').html(<%=@checkin.grand_total -  @checkin.payments.sum(:amount) %>);
 <% end %>

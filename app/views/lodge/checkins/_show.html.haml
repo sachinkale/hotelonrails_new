@@ -65,25 +65,8 @@
         Total:
         %b.service_total
           =checkin.list_item_total(s)
-  %h3 Total Charges          
-  .well.total_charges
-    %table.table.table-bordered
-      %tr
-        %th Room Charges
-        %td.room_charges
-          =checkin.total
-      %tr
-        %th Other Charges
-        %td.other_charges
-          =checkin.total_other_charges
-      %tr
-        %th Total
-        %td.grand_total
-          =checkin.grand_total
-          
-  %h3 
-    Payments
-   
+            
+  %h3 Payments
   .well.payments
     %a.btn.btn-mini.btn-primary.add_payment.pull-right
       %i.icon-plus-sign.icon-white 
@@ -109,5 +92,29 @@
       Payments Total:
       %b.total_payments
         =checkin.payments.sum(:amount)
+  %h3 Total 
+  .well.total_charges
+    %table.table.table-bordered
+      %tr
+        %th Room Charges
+        %td.room_charges
+          =checkin.total
+      %tr
+        %th Other Charges
+        %td.other_charges
+          =checkin.total_other_charges
+      %tr
+        %th Total Charges
+        %td.grand_total
+          =checkin.grand_total
+      %tr
+        %th Total Payments
+        %td.total_payments
+          =checkin.payments.sum(:amount)
+      %tr
+        %th Total Pending
+        %td.total_pending
+          =checkin.grand_total - checkin.payments.sum(:amount)
+
   =button_tag "Checkout", {:class => "btn btn-large btn-primary span3"}
   =button_tag "Print Bill", {:class => "btn btn-large btn-primary span3"}

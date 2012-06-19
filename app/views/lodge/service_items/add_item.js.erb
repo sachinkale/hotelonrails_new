@@ -10,6 +10,7 @@ $('#checkin-<%= @service_item.checkin_id %>').find('#service-<%= @service_item.s
 $('#checkin-<%= @service_item.checkin_id %>').find('.other_charges').text(<%= @service_item.checkin.total_other_charges %>);
 
 $('#checkin-<%= @service_item.checkin_id %>').find('.grand_total').text(<%= @service_item.checkin.grand_total %>);
+$('#checkin-<%= @service_item.checkin_id %>').find('.total_pending').text(<%= @service_item.checkin.grand_total - @service_item.checkin.payments.sum(:amount) %>);
 
 
 $('#item_loader').hide();

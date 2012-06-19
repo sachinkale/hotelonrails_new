@@ -3,4 +3,5 @@
 <% else %>
   $('.payment_row[id=<%= params[:id] %>]').remove();
 	$('#checkin-<%= @checkin.id %> .payments .total_payments').html(<%= @checkin.payments.sum(:amount) %>);
+	$('#checkin-<%= @checkin.id %> .total_pending').html(<%=@checkin.grand_total -  @checkin.payments.sum(:amount) %>);
 <% end %>
