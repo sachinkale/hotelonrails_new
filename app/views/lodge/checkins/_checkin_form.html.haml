@@ -1,5 +1,5 @@
 .span6
-  = form_for checkin,:url => lodge_checkins_path, :html => {:class => "well form-horizontal"}, :remote => true  do |f|
+  = form_for checkin,:url => lodge_checkin_path(checkin), :html => {:class => "well form-horizontal"}, :remote => true  do |f|
     - if checkin.errors.any?
       #error_explanation
         %h2
@@ -27,6 +27,7 @@
           %label.control-label Photo
           .controls
             %input#fileInput.input-file{:type => "file"}
+            =c.hidden_field :id
       %legend Rate Details
       .control-group
         %label.control-label Base Rate

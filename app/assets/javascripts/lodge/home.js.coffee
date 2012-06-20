@@ -88,4 +88,4 @@ jQuery ->
 	$('#add_payment_submit').click ->
 		$('#add_payment_loader').show()
 		$('#new_payment').submit()
-
+	

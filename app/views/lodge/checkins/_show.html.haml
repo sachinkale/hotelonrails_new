@@ -8,9 +8,9 @@
       %span.pull-right
         Checked in on:
         =checkin.from_date
-        %a.btn.btn-mini.btn-primary.edit-checkin{:href => "##{checkin.id}"}
-          %i.icon-edit.icon-white 
-          %b
+        =link_to edit_lodge_checkin_path(checkin), :remote => :true  do 
+          %button.btn-primary.btn-mini.btn
+            %i.icon-edit.icon-white 
            
 
     %table.table.table-bordered

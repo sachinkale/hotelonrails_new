@@ -42,7 +42,8 @@
           - c = Checkin.new
           - c.room = r
           - c.rate = r.room_type.base_rate
-          =render :partial => "lodge/checkins/new", :locals => {:room => r, :checkin => c}
+          - customer = Customer.new
+          =render :partial => "lodge/checkins/new", :locals => {:room => r, :checkin => c, :customer => customer}
         -else
           =render :partial => "lodge/checkins/show",:locals => {:checkin => r.current_checkin}
       

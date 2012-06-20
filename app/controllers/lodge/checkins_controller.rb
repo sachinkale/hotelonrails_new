@@ -40,7 +40,7 @@ class Lodge::CheckinsController < ApplicationController
   # GET /checkins/1/edit
   def edit
     @checkin = Checkin.find(params[:id])
-    @checkin.status = "Checked Out"
+    #@checkin.status = "Checked Out"
     respond_to do |format|
       format.html
       format.js
@@ -79,17 +79,18 @@ class Lodge::CheckinsController < ApplicationController
   # PUT /checkins/1.xml
   def update
     @checkin = Checkin.find(params[:id])
-    params[:checkin][:description] =  params[:select_description] + " : " + params[:checkin][:description] 
+		@customer = Customer.find(params[:checkin][:customer][:id])
+    #params[:checkin][:description] =  params[:select_description] + " : " + params[:checkin][:description] 
     respond_to do |format|
-      if @checkin.update_attributes(params[:checkin])
-        @checkin.checkout if not @checkin.status.nil?
-        format.html { redirect_to(user_root_url, :notice => 'Checkin was successfully updated.') }
-        format.js { }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @checkin.errors, :status => :unprocessable_entity }
-      end
+			params[:checkin][:customer].delete(:id)
+			@customer.update_attributes(params[:checkin][:customer])
+			params[:checkin].delete(:customer)
+			params[:checkin].delete(:discount)
+			params[:checkin].delete(:total_per_day)
+
+
+      @checkin.update_attributes(params[:checkin])
+			format.js
     end
   end
 

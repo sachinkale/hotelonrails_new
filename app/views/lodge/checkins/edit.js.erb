@@ -1,0 +1,2 @@
+$('#room<%= @checkin.room.number %>').html('<%=escape_javascript render :partial => "lodge/checkins/checkin_form", :locals => {:room => @checkin.room, :checkin => @checkin, :customer => @checkin.customer} %>');
+
