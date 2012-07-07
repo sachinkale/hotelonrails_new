@@ -138,4 +138,69 @@
     %a.btn{"data-dismiss" => "modal"} Cancel
     %a#add_payment_submit.btn.btn-primary Add Payment
 
+#print_dialog.modal.hide.fade
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} x
+    %h3 Print Bill
+  .modal-body
+    Do you want to print bill in name of  
+    %span.customer-name
+    ?
+    %a{:href => "#", :id => "change_customer"} [Change Billing Guest]
+    #print_form.hide
+      %fieldset
+        %legend Add Guest
+        .control-group
+          %label.control-label Name
+        .controls
+          =text_field_tag "name",'',:placeholder => "First-Name Last-Name", :required => true
+        .control-group
+          %label.control-label Address
+          .controls
+            =text_area_tag "address",'',:placeholder => "Address", :required => true, :rows => 3
+        .control-group
+          %label.control-label Phone
+          .controls
+            =telephone_field_tag "phone",'',:placeholder => "Mobile", :required => true
+        .control-group
+          %label.control-label Photo
+          .controls
+            %input#fileInput.input-file{:type => "file"}
+      %button#submit_invoice_customer.btn.btn-primary Change Customer
+
+    =hidden_field_tag "print_invoice_id"
+    =hidden_field_tag :print_checkin_id 
+  .modal-footer
+    =image_tag "smallloading.gif",:class => "pull-left hide", :id => "add_payment_loader"
+    %a.btn{"data-dismiss" => "modal"} Cancel
+    %a#add_invoice_submit.btn.btn-primary Print
+
+
+#hotel-details.hide
+  #header{:style => "clear:both;width:100%;overflow:auto;"}
+    .logo{:style => "float:left:width:70%;float:left"}
+      =image_tag APP_CONFIG['hotel_logo']
+     
+    .omega{:style => "text-align:right;vertical-align:bottom;width:20%;float:right;"}
+      %h1 Invoice
+    %br
+  %div
+    %p.address
+      =APP_CONFIG['hotel_address_line1']
+      ,&nbsp;
+      =APP_CONFIG['hotel_address_line2']
+      ,&nbsp;
+      =APP_CONFIG['hotel_address_line3']
+      %br
+      Email:&nbsp;
+      =APP_CONFIG['hotel_email']
+      ,&nbsp;
+      Website:
+      =APP_CONFIG['hotel_website']
+      ,&nbsp;
+      Phone:
+      =APP_CONFIG['hotel_phone']
+
+
+
 

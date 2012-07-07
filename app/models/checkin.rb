@@ -28,7 +28,7 @@ class Checkin < ActiveRecord::Base
 	#caculate discount
 	def discount
 		return 0 if self.room.nil? or (not self.room.nil? and self.room.room_type.base_rate < self.rate)
-		((self.room.room_type.base_rate - self.rate)/self.room.room_type.base_rate) * 100
+		(((self.room.room_type.base_rate - self.rate)/self.room.room_type.base_rate.to_f) * 100).round(2)
 	end
 
 	#total_per_day 

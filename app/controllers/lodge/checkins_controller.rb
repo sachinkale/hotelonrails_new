@@ -57,19 +57,29 @@ class Lodge::CheckinsController < ApplicationController
 		end
 		
 		format.js do
-			#deleting values not meant to be saved
-			params[:checkin].delete(:discount)
-			params[:checkin].delete(:total_per_day)
+			@room = Room.find(params[:checkin][:room_id])
+			@error = ""
+			if @room.status.nil?
+				#deleting values not meant to be saved
+				params[:checkin].delete(:discount)
+				params[:checkin].delete(:total_per_day)
 
-			#save customer
-			@customer = Customer.create(params[:checkin][:customer])
-			params[:checkin].delete(:customer)
+				#save customer
+				@customer = Customer.create(params[:checkin][:customer])
+				params[:checkin].delete(:customer)
 
-			@checkin = Checkin.new(params[:checkin])
-			@checkin.from_date = Time.new(@checkin.from_date.year,@checkin.from_date.month,@checkin.from_date.day,params[:date][:hour],params[:date][:minute],0,Time.now.utc_offset)
-			@checkin.customer = @customer
-			@checkin.save
-				
+				@checkin = Checkin.new(params[:checkin])
+				@checkin.from_date = Time.new(@checkin.from_date.year,@checkin.from_date.month,@checkin.from_date.day,params[:date][:hour],params[:date][:minute],0,Time.now.utc_offset)
+				@checkin.customer = @customer
+				@invoice = Invoice.new
+				@invoice.customer = @customer
+				@invoice.save
+				@checkin.invoice = @invoice
+				@checkin.save
+			else
+				@error = "room already occupied"
+			end
+					
 		end
 
 	 end

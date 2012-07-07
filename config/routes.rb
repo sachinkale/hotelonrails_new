@@ -5,6 +5,7 @@ HotelonrailsNew::Application.routes.draw do
 	namespace 'lodge' do
   	get "home/list"
 		resources :checkins
+		resources :invoices
 		post "service_items/add_item", :as => "add_service_item"
     delete "service_items/delete_item", :as => "delete_service_item"
 	end

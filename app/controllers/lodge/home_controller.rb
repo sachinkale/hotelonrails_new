@@ -4,5 +4,6 @@ class Lodge::HomeController < ApplicationController
 		@rooms = Room.all
 		@checkin = Checkin.new
 		@payment = Payment.new
+		@invoice = Invoice.new
   end
 end
