@@ -1,5 +1,5 @@
 .span6
-  = form_for checkin,:url => lodge_checkins_path, :html => {:class => "well form-horizontal"}, :remote => true  do |f|
+  = form_for checkin,:url => lodge_checkins_path, :html => {:class => "well form-horizontal"}  do |f|
     - if checkin.errors.any?
       #error_explanation
         %h2

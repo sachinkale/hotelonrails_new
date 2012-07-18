@@ -4,6 +4,7 @@ HotelonrailsNew::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
 	namespace 'lodge' do
   	get "home/list"
+		put "checkins/checkout/:id",:controller => "checkins", :action => "checkout", :as => "checkout"
 		resources :checkins
 		resources :invoices
 		post "service_items/add_item", :as => "add_service_item"

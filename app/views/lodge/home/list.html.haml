@@ -24,7 +24,7 @@
               %table.table.table-striped
                 -@room_types[i].vacant_rooms.each do |r|
                   - j = j + 1
-                  %tr
+                  %tr.vacant_room
                     %td
                       #{j}
                     %td
@@ -45,7 +45,7 @@
           - customer = Customer.new
           =render :partial => "lodge/checkins/new", :locals => {:room => r, :checkin => c, :customer => customer}
         -else
-          =render :partial => "lodge/checkins/show",:locals => {:checkin => r.current_checkin}
+          =render :partial => "lodge/checkins/show",:locals => {:checkin => r.current_checkin, :invoice => r.current_checkin.invoice}
       
 
 .tax.hidden

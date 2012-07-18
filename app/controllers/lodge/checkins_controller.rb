@@ -52,13 +52,13 @@ class Lodge::CheckinsController < ApplicationController
   def create
    respond_to do |format|
 					 
-		format.html do
-			redirect_to lodge_home_list_url, :notice => 'done'
-		end
+		#format.html do
+		#		redirect_to lodge_home_list_url, :notice => 'done'
+		#	end
 		
-		format.js do
+		format.html do
 			@room = Room.find(params[:checkin][:room_id])
-			@error = ""
+			@error = "Checked in Successful"
 			if @room.status.nil?
 				#deleting values not meant to be saved
 				params[:checkin].delete(:discount)
@@ -70,6 +70,7 @@ class Lodge::CheckinsController < ApplicationController
 
 				@checkin = Checkin.new(params[:checkin])
 				@checkin.from_date = Time.new(@checkin.from_date.year,@checkin.from_date.month,@checkin.from_date.day,params[:date][:hour],params[:date][:minute],0,Time.now.utc_offset)
+				#@checkin.from_date = Time.now
 				@checkin.customer = @customer
 				@invoice = Invoice.new
 				@invoice.customer = @customer
@@ -79,7 +80,7 @@ class Lodge::CheckinsController < ApplicationController
 			else
 				@error = "room already occupied"
 			end
-					
+			redirect_to lodge_home_list_url, :notice => @error		
 		end
 
 	 end
@@ -118,9 +119,9 @@ class Lodge::CheckinsController < ApplicationController
 
   def checkout
     @checkin = Checkin.find(params[:id])
-    @title = "Print Invoice"
+		@checkin.checkout
     respond_to do |format|
-      format.html { render :layout => "print"}
+      format.js {}
     end
   end
  

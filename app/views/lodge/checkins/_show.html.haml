@@ -1,73 +1,74 @@
- 
-.checkin.span8{:id => "checkin-#{checkin.id}"}
+.invoice.span8{:id => "invoice-#{checkin.invoice.id}"}
   .invoice-details
     =hidden_field_tag :invoice_id,checkin.invoice_id
     =hidden_field_tag :customer_name,checkin.invoice.customer.name
-  %h3 Checkin Details
-  .well.checkin-details
-    %p
-      Name: 
-      %b.customer-name=checkin.customer.name
-      %span.pull-right
-        Checked in on:
-        %b.checkin-date=checkin.from_date
-        =link_to edit_lodge_checkin_path(checkin), :remote => :true  do 
-          %button.btn-primary.btn-mini.btn
-            %i.icon-edit.icon-white 
-           
-    %table.table.table-bordered
-      %tr
-        %th Room
-        -if checkin.discount > 0
-          %th Rate 
-          %th Discount
-        %th Applied Rate
-        %th Extra Person
-        %th Tax
-        %th Total Per Day
-        %th No of Days
-        %th Amount
-      %tr
-        %td 
-          =checkin.room.number
-        -if checkin.discount > 0
-          %td
-            =checkin.room.room_type.base_rate
-          %td
-            =checkin.discount.to_s + " %"
-        %td
-          =checkin.rate
-        %td
-          =checkin.extra_person
-        %td
-          10%
-        %td
-          =checkin.total_per_day
-        %td
-          =checkin.no_of_days
-        %td
-          =checkin.total
-  %h3 Other Charges
-  - Service.all.each do |s|
-    .well.services{:id => "service-#{s.id}"}
-      %h4
-        %span.service-name=s.name
-        %a.btn.btn-mini.btn-primary.pull-right.add_service{:href => "##{s.id}"}
-          %i.icon-plus-sign.icon-white
-          Add
+  .checkin{:id => "checkin-#{checkin.id}"}
+    %h3 Checkin Details
+    .well.checkin-details
+      %p
+        Name: 
+        %b.customer-name=checkin.customer.name
+        %span.pull-right
+          Checked in on:
+          %b.checkin-date=checkin.from_date.strftime("%d-%m-%y %H:%M")
+          =link_to edit_lodge_checkin_path(checkin), :remote => :true  do 
+            %button.btn-primary.btn-mini.btn
+              %i.icon-edit.icon-white 
+             
       %table.table.table-bordered
         %tr
-          %th
-          %th Date
-          %th Bill Number
-          %th Details
+          %th Room
+          -if checkin.discount > 0
+            %th Rate 
+            %th Discount
+          %th Applied Rate
+          %th Extra Person
+          %th Tax
+          %th Total Per Day
+          %th No of Days
           %th Amount
-        =render :partial => "lodge/service_items/service_item", :collection => checkin.list_items(s)
-      .total.pull-right
-        =s.name
-        Total:
-        %b.service_total
-          =checkin.list_item_total(s)
+        %tr
+          %td 
+            =checkin.room.number
+          -if checkin.discount > 0
+            %td
+              =checkin.room.room_type.base_rate
+            %td
+              =checkin.discount.to_s + " %"
+          %td
+            =checkin.rate
+          %td
+            =checkin.extra_person
+          %td
+            10%
+          %td
+            =checkin.total_per_day
+          %td
+            =checkin.no_of_days
+          %td
+            =checkin.total
+    %h3 Other Charges
+    - Service.all.each do |s|
+      .well.services{:id => "service-#{s.id}"}
+        %h4
+          %span.service-name=s.name
+          %a.btn.btn-mini.btn-primary.pull-right.add_service{:href => "##{s.id}"}
+            %i.icon-plus-sign.icon-white
+            Add
+        %table.table.table-bordered
+          %tr
+            %th
+            %th Date
+            %th Bill Number
+            %th Room
+            %th Details
+            %th Amount
+          =render :partial => "lodge/service_items/service_item", :collection => checkin.list_items(s)
+        .total.pull-right
+          =s.name
+          Total:
+          %b.service_total
+            =checkin.list_item_total(s)
             
   %h3 Payments
   .well.payments
@@ -80,7 +81,7 @@
         %th Date
         %th Payment
         %th Amount
-      -checkin.payments.each do |p|
+      -invoice.payments.each do |p|
         %tr.payment_row{:id=>"#{p.id}"}
           %td
             =link_to payment_path(p.id), :method => :delete, :remote => true do
@@ -94,7 +95,7 @@
     .total.pull-right
       Payments Total:
       %b.total_payments
-        =checkin.payments.sum(:amount)
+        =invoice.payments.sum(:amount)
   %h3 Total 
   .well.total_charges
     %table.table.table-bordered
@@ -113,11 +114,11 @@
       %tr
         %th Total Payments
         %td.total_payments
-          =checkin.payments.sum(:amount)
+          =invoice.payments.sum(:amount)
       %tr
         %th Total Pending
         %td.total_pending
-          =checkin.grand_total - checkin.payments.sum(:amount)
+          =checkin.grand_total - invoice.payments.sum(:amount)
 
   =button_tag "Checkout", {:class => "btn btn-large btn-primary span3 checkout-button", :id => "checkout-#{checkin.id}"}
   =button_tag "Print Bill", {:class => "btn btn-large btn-primary span3 print-button", :id => "print-#{checkin.id}"}

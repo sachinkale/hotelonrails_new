@@ -11,7 +11,7 @@ class Checkin < ActiveRecord::Base
 	belongs_to :room
 	belongs_to :invoice
 	has_many :service_items
-	has_many :payments, :as => :owner
+	#has_many :payments, :as => :owner
 
 	#set default values
 	def init
@@ -47,9 +47,11 @@ class Checkin < ActiveRecord::Base
 			todate = self.checkout_date
 		end
 
- 	  n = n + 1 if self.from_date.to_time.hour < APP_CONFIG['hotel_checkout_hour'] 
+		n = 1 if n == 0
 
-    n = n + 1 if todate.to_time.hour > APP_CONFIG['hotel_checkout_hour'] 
+ 	  n = n + 1 if self.from_date.to_time.in_time_zone.hour < APP_CONFIG['hotel_checkout_hour'] 
+
+    n = n + 1 if not self.checkout_date.nil? and  self.checkout_date.to_time.in_time_zone.hour > APP_CONFIG['hotel_checkout_hour'] 
 
 		return n 
 	end
@@ -76,5 +78,11 @@ class Checkin < ActiveRecord::Base
 
 	def grand_total
 		self.total + self.total_other_charges
+	end
+
+	def checkout
+		self.update_attribute(:status,"Checked Out")
+		self.update_attribute(:checkout_date, Time.now)
+		self.room.update_attribute("status",nil)
 	end
 end

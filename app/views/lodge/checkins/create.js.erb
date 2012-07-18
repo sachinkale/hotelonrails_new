@@ -1,13 +1,7 @@
 <% if @error != "" %>
-  var d = $("<div class=\"alert alert-error\"></div>").append($("<a class=\"close\" data-dismiss=\"alert\"></a>").text(<%= @error %>));
-	$('.content .row-fluid').append(d);
+ 	alert('<%= @error %>');
 <% elsif @checkin.errors.any? %>
- var d = $("<div class=\"alert alert-error\"></div>").append($("<a class=\"close\" data-dismiss=\"alert\"></a>").text(<%= @checkin.errors.full_messages.join("<br/>") %>));
-
-	$('.content .row-fluid').append(d);
-
+	alert('<%= @checkin.errors.full_messages.join("<br/>") %>');
 <% else %>
-	$('.tab-pane.active .span6').remove();
-	$('.tab-pane.active .span8').append( $('<div class="alert alert-success"></div>').append($('<a class="close" data-dismiss="alert">×</a>')).text('Checked in succesfully!'));
-	$('.tab-pane.active').append('<%=escape_javascript render :partial =>"show", :locals => {:checkin => @checkin} %>');
+ 	window.location.href("/");
 <% end %>

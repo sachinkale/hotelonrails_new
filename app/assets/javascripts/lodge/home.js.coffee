@@ -93,14 +93,14 @@ jQuery ->
 		$('#new_payment').submit()
 	
 	#print
-	$('.print-button').click ->
+	$('.print-button').on 'click', -> 
 		c = $(@).attr('id').match(/\d+/)[0]
 		$('#print_dialog #print_invoice_id').val($('#checkin-' + c + ' #invoice_id').val())
 		$('#print_dialog .customer-name').html($('#checkin-' + c + ' .invoice-details #customer_name ').val())
 		$('#print_checkin_id').val(c)
 		$('#print_dialog').modal 'show'
 
-	$('#add_invoice_submit').click ->
+	$('#add_invoice_submit').on 'click', ->
 		$('#print_dialog').modal 'hide'
 		printCurrent($('#print_checkin_id').val())
 
@@ -145,18 +145,36 @@ jQuery ->
 			
 
 
-
+	$('.checkout-button').click ->
+		c = $(@).attr('id').match(/\d+/)[0]
+		if(parseInt($.trim($('#checkin-' + c + ' .total_pending').text())) == 0)
+			$.ajax
+				type: 'PUT'
+				url: '/lodge/checkins/checkout/' + c
+				beforeSend: ->
+					$(@).text('Please Wait')
+					$(@).attr('disabled',true)
+				success: ->
+					window.location.href = '/lodge/home/list' 
+				error: ->
+					$(@).text('Checkout')
+					$(@).attr('disabled',false)
+					alert 'Error Checking out'
+					return false
+		else
+			alert 'Please add payments'
+			return false
 		
 
 	printCurrent = (c) ->
 		w = window.open("")
 		w.document.write("<html><head></head><body>")
 		w.document.write($('#hotel-details').html())
+		w.document.write("<hr/>")
 		w.document.write('<div style="float:right;width:150px">')
 		w.document.write('Invoice Number: ')
 		w.document.write($('#checkin-' + c + ' #invoice_id').val())
 		w.document.write('</div>')
-		w.document.write("<hr/>")
 		w.document.write("Guest Name: ")
 		w.document.write("<b>")
 		w.document.write($('#checkin-' + c + ' .invoice-details #customer_name').val())
