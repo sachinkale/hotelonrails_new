@@ -7,7 +7,7 @@ class PaymentsController < ApplicationController
     else
 
 		 @payment = Payment.create(params[:payment])
-		 @checkin = Checkin.find(params[:payment][:owner_id])
+		 @invoice = Invoice.find(params[:payment][:owner_id])
      # @ticket = Ticket.find(params[:payment][:owner_id])
      #if (params[:payment][:payment_method_id] == "3" or params[:payment][:payment_method_id] == "4") and @ticket.guest.nil?
      #   @error = "Customer should be added for debt/free payments"
@@ -47,7 +47,7 @@ class PaymentsController < ApplicationController
   def destroy
     @payment = Payment.find(params[:id])
     #@ticket = Ticket.find(@payment.owner_id)
-    @checkin = Checkin.find(@payment.owner_id)
+    @invoice = Invoice.find(@payment.owner_id)
     @error = true
     if @payment.destroy
       @error = false

@@ -2,6 +2,6 @@
   alert '<%= @error %>'
 <% else %>
   $('.payment_row[id=<%= params[:id] %>]').remove();
-	$('#checkin-<%= @checkin.id %> .payments .total_payments').html(<%= @checkin.payments.sum(:amount) %>);
-	$('#checkin-<%= @checkin.id %> .total_pending').html(<%=@checkin.grand_total -  @checkin.payments.sum(:amount) %>);
+	$('#invoice-<%= @invoice.id %> .total_payments').html(<%= @invoice.payments.sum(:amount) %>);
+	$('#invoice-<%= @invoice.id %> .total_pending').html(<%=@invoice.grand_total -  @invoice.payments.sum(:amount) %>);
 <% end %>

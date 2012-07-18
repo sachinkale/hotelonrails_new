@@ -1,11 +1,11 @@
 $('#service_item_<%= @service_item.id %>').remove();
 $('#checkin-<%= @checkin.id %>').find('#service-<%= @service.id %> .service_total').text('<%= @checkin.list_item_total(@service) %>');
 
-$('#checkin-<%= @checkin.id %>').find('.other_charges').text(<%= @checkin.total_other_charges %>);
+$('#invoice-<%= @checkin.invoice_id %>').find('.other_charges').text(<%= @checkin.invoice.total_other_charges %>);
 
-$('#checkin-<%= @checkin.id %>').find('.grand_total').text(<%= @checkin.grand_total %>);
+$('#invoice-<%= @checkin.invoice_id %>').find('.grand_total').text(<%= @checkin.invoice.grand_total %>);
 
-$('#checkin-<%= @service_item.checkin_id %>').find('.total_pending').text(<%= @service_item.checkin.grand_total - @service_item.checkin.payments.sum(:amount) %>);
+$('#invoice-<%= @checkin.invoice_id %>').find('.total_pending').text(<%= @checkin.invoice.grand_total - @checkin.invoice.payments.sum(:amount) %>);
 
 
 $('#delete_item_loader').hide();

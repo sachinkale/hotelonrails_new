@@ -102,15 +102,15 @@
       %tr
         %th Room Charges
         %td.room_charges
-          =checkin.total
+          =invoice.room_total
       %tr
         %th Other Charges
         %td.other_charges
-          =checkin.total_other_charges
+          =invoice.total_other_charges
       %tr
         %th Total Charges
         %td.grand_total
-          =checkin.grand_total
+          =invoice.grand_total
       %tr
         %th Total Payments
         %td.total_payments
@@ -118,8 +118,8 @@
       %tr
         %th Total Pending
         %td.total_pending
-          =checkin.grand_total - invoice.payments.sum(:amount)
+          =invoice.grand_total - invoice.payments.sum(:amount)
 
-  =button_tag "Checkout", {:class => "btn btn-large btn-primary span3 checkout-button", :id => "checkout-#{checkin.id}"}
-  =button_tag "Print Bill", {:class => "btn btn-large btn-primary span3 print-button", :id => "print-#{checkin.id}"}
+  =button_tag "Checkout", {:class => "btn btn-large btn-primary span3 checkout-button", :id => "checkout-#{invoice.id}"}
+  =button_tag "Print Bill", {:class => "btn btn-large btn-primary span3 print-button", :id => "print-#{invoice.id}"}
 

@@ -99,7 +99,9 @@ class Lodge::CheckinsController < ApplicationController
 			params[:checkin].delete(:discount)
 			params[:checkin].delete(:total_per_day)
 
-
+			date = Date.parse(params[:checkin][:from_date])
+			params[:checkin][:from_date] = Time.local(date.year,date.month,date.day,params[:date][:hour],params[:date][:minute])
+			params[:checkin].delete(:date)
       @checkin.update_attributes(params[:checkin])
 			format.js
     end

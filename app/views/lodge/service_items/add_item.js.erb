@@ -7,10 +7,10 @@ $('#checkin-<%= @service_item.checkin_id %>').find('#service_item_<%=@service_it
 
 $('#checkin-<%= @service_item.checkin_id %>').find('#service-<%= @service_item.service_id %> .service_total').text('<%= @service_item.checkin.list_item_total(@service_item.service) %>');
 $('#checkin-<%= @service_item.checkin_id %>').find('#service-<%= @service_item.service_id %> .service_total').effect('highlight',2000);
-$('#checkin-<%= @service_item.checkin_id %>').find('.other_charges').text(<%= @service_item.checkin.total_other_charges %>);
+$('#invoice-<%= @service_item.checkin.invoice_id %>').find('.other_charges').text(<%= @service_item.checkin.invoice.total_other_charges %>);
 
-$('#checkin-<%= @service_item.checkin_id %>').find('.grand_total').text(<%= @service_item.checkin.grand_total %>);
-$('#checkin-<%= @service_item.checkin_id %>').find('.total_pending').text(<%= @service_item.checkin.grand_total - @service_item.checkin.payments.sum(:amount) %>);
+$('#invoice-<%= @service_item.checkin.invoice_id %>').find('.grand_total').text(<%= @service_item.checkin.invoice.grand_total %>);
+$('#invoice-<%= @service_item.checkin.invoice_id %>').find('.total_pending').text(<%= @service_item.checkin.invoice.grand_total - @service_item.checkin.invoice.payments.sum(:amount) %>);
 
 
 $('#item_loader').hide();
