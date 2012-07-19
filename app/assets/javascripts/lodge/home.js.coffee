@@ -143,8 +143,15 @@ jQuery ->
 				$('#submit_invoice_customer').attr('disabled',false)
 				return false
 	
+	$('.shift_room').click ->
+		c =$(@).attr('id').match(/\d+/)[0]			
+		$('#shift_room_checkin_id').val(c)
+		$.each $('.vacant_room h4'), (key,value) ->
+			$('#shift_room_form select').append($('<option></option>').append($(value).text()))
 			
-
+		$('#shift_room_dialog').modal 'show'
+	$('#shift_room_submit').click ->
+		$('#shift_room_form').submit()
 
 	$('.checkout-button').click ->
 		c = $(@).attr('id').match(/\d+/)[0]

@@ -138,6 +138,21 @@
     %a.btn{"data-dismiss" => "modal"} Cancel
     %a#add_payment_submit.btn.btn-primary Add Payment
 
+#shift_room_dialog.modal.hide.fade
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} x
+    %h3 Shift Room
+  .modal-body
+    =form_tag lodge_shift_room_url, :id => "shift_room_form", :method => "put" do
+      =hidden_field_tag :shift_room_checkin_id
+      =select_tag :room_list
+
+  .modal-footer
+    =image_tag "smallloading.gif",:class => "pull-left hide", :id => "add_payment_loader"
+    %a.btn{"data-dismiss" => "modal"} Cancel
+    %a#shift_room_submit.btn.btn-primary Shift Room
+
+
 #print_dialog.modal.hide.fade
   .modal-header
     %a.close{"data-dismiss" => "modal"} x

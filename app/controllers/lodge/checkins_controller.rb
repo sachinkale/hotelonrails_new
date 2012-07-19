@@ -130,43 +130,31 @@ class Lodge::CheckinsController < ApplicationController
 
   def shift_room
 
-    myarr = params[:shiftroom_room_id_checkin_id].split(/-/)
-    from_room = Room.find(myarr[1])
-    checkin = Checkin.find(myarr[3])
-    to_room = Room.find(params[:shift_room_id])
-    line_item = LineItem.where("checkin_id = ? and room_id = ?",checkin.id,from_room.id).first
+    checkin = Checkin.find(params[:shift_room_checkin_id])
+    to_room = Room.find_by_number(params[:room_list])
 
-    if params[:rate] == ""
-      rate = to_room.room_type.baserate
-    else
-      rate = params[:rate].to_i
-    end
-    
-    if params[:tax] == ""
-      tax = 0
-    else 
-      tax = params[:tax]
-    end
-    
-    shift_time = Time.local(params[:shift_room]["shift_time(1i)"],params[:shift_room]["shift_time(2i)"],params[:shift_room]["shift_time(3i)"],params[:shift_room]["shift_time(4i)"],params[:shift_room]["shift_time(5i)"])
+    if checkin.no_of_days > 1 
+			new_checkin = Checkin.new
+			new_checkin.customer = checkin.customer
+			new_checkin.invoice = checkin.invoice
+			new_checkin.from_date = Time.now
+			new_checkin.room = to_room
+			new_checkin.rate = to_room.room_type.base_rate
+			new_checkin.save
+			checkin.checkout
+		else
+			checkin.room.update_attribute(:status,nil)
+			checkin.rate = to_room.room_type.base_rate
+			checkin.room = to_room
+			checkin.save
+		end
 
-
-    if line_item.no_of_days > 1 
-      line_item.update_attributes(:todate => shift_time, :freez => true)
-      new_line_item = LineItem.create({:room_id => to_room.id, :fromdate => shift_time, :checkin_id => checkin.id, :extraperson => line_item.extraperson, :tax => line_item.tax, :rate => rate})
-    else
-      line_item.update_attribute(:room_id,to_room.id)
-      line_item.update_attribute(:rate,rate)
-      line_item.update_attribute(:tax,tax.to_f)
-    end
-
-    from_room.update_attribute('status',nil)
-    to_room.update_attribute('status','blocked - checked in')
+    to_room.update_attribute('status','occupied')
 
     respond_to do |format|
       format.html {
         flash[:notice] = "Shifted Room successfully!"
-        redirect_to user_root_url
+        redirect_to lodge_home_list_url
       }
     end
 

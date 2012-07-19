@@ -28,7 +28,9 @@ class Invoice < ActiveRecord::Base
 		end
 		return t
 
-
-
+	end
+	
+	def checked_out_checkins
+		self.checkins.where("status like 'Checked Out'")
 	end
 end

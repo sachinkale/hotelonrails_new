@@ -5,6 +5,7 @@ HotelonrailsNew::Application.routes.draw do
 	namespace 'lodge' do
   	get "home/list"
 		put "checkins/checkout/:id",:controller => "checkins", :action => "checkout", :as => "checkout"
+		put "checkins/shift_room",:controller => "checkins", :action => "shift_room", :as => "shift_room"
 		resources :checkins
 		resources :invoices
 		post "service_items/add_item", :as => "add_service_item"

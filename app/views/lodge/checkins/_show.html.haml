@@ -1,9 +1,80 @@
-.invoice.span8{:id => "invoice-#{checkin.invoice.id}"}
+.invoice.span8{:id => "invoice-#{invoice.id}"}
   .invoice-details
-    =hidden_field_tag :invoice_id,checkin.invoice_id
-    =hidden_field_tag :customer_name,checkin.invoice.customer.name
+    =hidden_field_tag :invoice_id,invoice.id
+    =hidden_field_tag :customer_name,invoice.customer.name
+  -invoice.checked_out_checkins.each do |c|
+    %h3 Shifted Room Checkins
+    .checked_out.well{:id => "checked-out-#{c.id}"}
+      %span.pull-right
+        Checked in on:
+        %b.checkin-date=c.from_date.strftime("%d-%m-%y %H:%M")
+      %table.table.table-bordered
+        %tr
+          %th Room
+          -if c.discount > 0
+            %th Rate 
+            %th Discount
+          %th Applied Rate
+          %th Extra Person
+          %th Tax
+          %th Total Per Day
+          %th No of Days
+          %th Amount
+        %tr
+          %td 
+            =c.room.number
+          -if c.discount > 0
+            %td
+              =c.room.room_type.base_rate
+            %td
+              =c.discount.to_s + " %"
+          %td
+            =c.rate
+          %td
+            =c.extra_person
+          %td
+            10%
+          %td
+            =c.total_per_day
+          %td
+            =c.no_of_days
+          %td
+            =c.total
+      %h4 Shifted Room Other Charges
+      - Service.all.each do |s|
+        %h4 
+          =s.name
+        %table.services.table.table-bordered
+          %tr
+            %th Date
+            %th Bill Number
+            %th Room
+            %th Details
+            %th Amount
+          -c.list_items(s).each do |service_item|
+            %tr
+              %td
+                =service_item.updated_at
+              %td
+                =service_item.bill_number
+              %td
+                =service_item.checkin.room.number
+              %td
+                =service_item.notes
+              %td
+                =service_item.amount
+
+        .total.pull-right
+          =s.name
+          Total:
+          %b.service_total
+            =c.list_item_total(s)
+       
+
+
   .checkin{:id => "checkin-#{checkin.id}"}
-    %h3 Checkin Details
+    %h3 
+      Current Checkin Details
     .well.checkin-details
       %p
         Name: 
@@ -47,6 +118,12 @@
             =checkin.no_of_days
           %td
             =checkin.total
+      %small
+        /=link_to lodge_shift_room_path(:id => checkin.id) do
+        %button.btn-primary.btn-mini.btn.shift_room{:id => "shift-room-#{checkin.id}"}
+          %i.icon-share-alt.icon-white
+          Shift Room
+
     %h3 Other Charges
     - Service.all.each do |s|
       .well.services{:id => "service-#{s.id}"}
