@@ -122,6 +122,12 @@ class Lodge::CheckinsController < ApplicationController
   def checkout
     @checkin = Checkin.find(params[:id])
 		@checkin.checkout
+		@checkin.invoice.payments.each do |p|
+			if p.payment_method.name == "Debt"
+				@checkin.invoice.update_attribute(:status, "payment pending")
+			end
+		end
+		@checkin.invoice.update_attribute(:status, "closed") if @checkin.invoice.status.nil?
     respond_to do |format|
       format.js {}
     end

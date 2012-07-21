@@ -1,11 +1,9 @@
 %header.subhead.jumbotron
   .subnav-fixed.subnav
     %ul.nav.nav-pills
-      %li.active
+      %li{:class => "#{current_page?(lodge_home_list_url) ? 'active' : ''}"}
         =link_to "Home", lodge_home_list_path
+      %li{:class => "#{current_page?(lodge_home_close_cash_url) ? 'active' : ''}"}
+        =link_to "Close Cash", lodge_home_close_cash_path
       %li
-        =link_to "New Checkin", new_lodge_checkin_path
-      %li
-        =link_to "Close Cash", "#"
-      %li
-        =link_to "Invoices", "#"
+        =link_to "Pending Invoices", "#"

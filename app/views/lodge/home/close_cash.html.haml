@@ -1,0 +1,172 @@
+%h3
+  Last Close Cash on :
+  =@closed_cash.created_at.in_time_zone
+%table.table.table-bordered
+  %tr
+    %td
+      Total Sale
+    %td
+      = (@total_cash || 0)   +  (@total_card || 0 )  + ( @total_debt || 0 ) + (@total_free || 0)
+  %tr
+    %td
+      Total Cash
+    %td
+      - if @total_cash
+        =link_to @total_cash, "#",:id => "cash"
+      - else
+        0
+  %tr.cash.details{:style => "display:none"}
+    %td{:colspan => 2}
+      %table
+        %th
+          Number
+        %th
+          Time
+        %th 
+          Room
+        %th
+          Amount
+        -@cash_invoices.each do |t|
+          %tr
+            %td 
+              =t.id
+            %td
+              =t.updated_at.in_time_zone
+            %td
+              - a = ""
+              -t.checkins.each do |c|
+                -a = a + c.room.number + "|"
+              =a
+            %td
+              =t.grand_total
+
+  %tr
+    %td
+      Total Card
+    %td
+      - if @total_card
+        =link_to @total_card, "#",:id => "card"
+      - else
+        0 
+  %tr.card.details{:style => "display:none"}
+    %td{:colspan => 2}
+      %table
+        %th
+          Number
+        %th
+          Time
+        %th 
+          Room
+        %th
+          Amount
+        -@card_invoices.each do |t|
+          %tr
+            %td 
+              =t.id
+            %td
+              =t.updated_at.in_time_zone
+            %td
+              - a = ""
+              -t.checkins.each do |c|
+                -a = a + c.room.number + "|"
+              =a
+
+            %td
+              =t.grand_total
+            %td
+              =link_to "void", void_ticket_path(t), :method => :put
+
+
+  %tr
+    %td
+      Total Debt
+    %td
+      - if @total_debt
+        =link_to @total_debt, "#",:id => "debt"
+      - else
+        0
+  %tr.debt.details{:style => "display:none"}
+    %td{:colspan => 2}
+      %table
+        %th
+          Number
+        %th
+          Time
+        %th 
+          Room
+        %th
+          Amount
+        -@debt_invoices.each do |t|
+          %tr
+            %td 
+              =t.id
+            %td
+              =t.updated_at.in_time_zone
+            %td
+              - a = ""
+              -t.checkins.each do |c|
+                -a = a + c.room.number + "|"
+              =a
+
+            %td
+              =t.grand_total
+
+
+  %tr
+    %td
+      Total Free
+    %td
+      - if @total_free
+        =link_to @total_free, "#",:id => "free"
+      - else
+        ="0"
+  %tr.free.details{:style => "display:none"}
+    %td{:colspan => 2}
+      %table
+        %th
+          Number
+        %th
+          Time
+        %th 
+          Table
+        %th
+          Amount
+        -@free_invoices.each do |t|
+          %tr
+            %td 
+              =t.id
+            %td
+              =t.updated_at.in_time_zone
+            %td
+              - a = ""
+              -t.checkins.each do |c|
+                -a = a + c.room.number + "|"
+              =a
+
+            %td
+              =t.grand_total
+
+
+
+=form_for @closed_cash, :url => lodge_create_close_cash_path(:id => @closed_cash.id), :remote => "true" do 
+  =submit_tag "Close Cash", :class => "button btn-primary"
+
+
+:javascript
+  $(function(){
+    $('#submitme').click(function() {
+
+    });
+    $('#cash').click(function(){
+      $('.cash').toggle();
+    });
+    $('#card').click(function(){
+      $('.card').toggle();
+    });
+    $('#debt').click(function(){
+      $('.debt').toggle();
+    });
+    $('#free').click(function(){
+      $('.free').toggle();
+    });
+  });

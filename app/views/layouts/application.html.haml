@@ -22,7 +22,7 @@
           = render 'layouts/navigation'
    
     .container-fluid
-      -if (current_page?(lodge_home_list_url))
+      -if (current_page?(lodge_home_list_url) or current_page?(lodge_home_close_cash_url))
         =render 'layouts/lodge_subnav'
       .content
         .row-fluid

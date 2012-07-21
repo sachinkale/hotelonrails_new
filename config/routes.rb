@@ -4,6 +4,8 @@ HotelonrailsNew::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
 	namespace 'lodge' do
   	get "home/list"
+		get "home/close_cash"
+		put "home/create_close_cash/:id",:controller => "home", :action => "create_close_cash", :as => "create_close_cash"
 		put "checkins/checkout/:id",:controller => "checkins", :action => "checkout", :as => "checkout"
 		put "checkins/shift_room",:controller => "checkins", :action => "shift_room", :as => "shift_room"
 		resources :checkins

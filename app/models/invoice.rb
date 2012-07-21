@@ -4,6 +4,8 @@ class Invoice < ActiveRecord::Base
 
 	has_many :payments, :as => :owner
 	
+	scope :valid, where("status is not null")
+
 	def grand_total
 		t = 0
 		self.checkins.each do |c|
