@@ -8,7 +8,7 @@
       %span.pull-right
         Checked in on:
         %b.checkin-date=c.from_date.strftime("%d-%m-%y %H:%M")
-      %table.table.table-bordered
+      %table.table.table-bordered.room_table
         %tr
           %th Room
           -if c.discount > 0
@@ -42,33 +42,34 @@
             =c.total
       %h4 Shifted Room Other Charges
       - Service.all.each do |s|
-        %h4 
-          =s.name
-        %table.services.table.table-bordered
-          %tr
-            %th Date
-            %th Bill Number
-            %th Room
-            %th Details
-            %th Amount
-          -c.list_items(s).each do |service_item|
+        .services
+          %h4.service_name 
+            =s.name
+          %table.table.table-bordered
             %tr
-              %td
-                =service_item.updated_at
-              %td
-                =service_item.bill_number
-              %td
-                =service_item.checkin.room.number
-              %td
-                =service_item.notes
-              %td
-                =service_item.amount
+              %th Date
+              %th Bill Number
+              %th Room
+              %th Details
+              %th Amount
+            -c.list_items(s).each do |service_item|
+              %tr
+                %td
+                  =service_item.updated_at
+                %td
+                  =service_item.bill_number
+                %td
+                  =service_item.checkin.room.number
+                %td
+                  =service_item.notes
+                %td
+                  =service_item.amount
 
-        .total.pull-right
-          =s.name
-          Total:
-          %b.service_total
-            =c.list_item_total(s)
+          .total.pull-right
+            =s.name
+            Total:
+            %b.service_total
+              =c.list_item_total(s)
        
 
 
