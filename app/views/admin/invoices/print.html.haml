@@ -1,0 +1,116 @@
+=render :partial => "lodge/checkins/show",:locals => {:checkin => @checkin, :invoice => @invoice}
+=hidden_field_tag :print_checkin_id, "#{@checkin.id}"
+#hotel-details{:style=>"display:none"}
+  #header{:style => "clear:both;width:100%;overflow:auto;"}
+    .logo{:style => "float:left:width:70%;float:left"}
+      =image_tag APP_CONFIG['hotel_logo']
+     
+    .omega{:style => "text-align:right;vertical-align:bottom;width:20%;float:right;"}
+      %h1 Invoice
+    %br
+  %div
+    %p.address
+      =APP_CONFIG['hotel_address_line1']
+      ,&nbsp;
+      =APP_CONFIG['hotel_address_line2']
+      ,&nbsp;
+      =APP_CONFIG['hotel_address_line3']
+      %br
+      Email:&nbsp;
+      =APP_CONFIG['hotel_email']
+      ,&nbsp;
+      Website:
+      =APP_CONFIG['hotel_website']
+      ,&nbsp;
+      Phone:
+      =APP_CONFIG['hotel_phone']
+
+
+
+.tax-declaration.hidden{:style => "display:none"}
+  %hr
+  %small
+    %b Service Tax No.: 27480571402V 
+    * 6.18% service tax applicable above Rs.1000
+    %br
+    %b Luxury Tax No.: 27480571402L 
+    * 4% luxury tax applicable above Rs. 750
+    * 10% luxury tax applicable above Rs. 1200
+:javascript
+  $('.print-button').click(function(){
+  print_me("#{@invoice.id}");
+  });
+  function print_me(c){
+  w = window.open("");
+  w.document.write("<html><head></head><body>");
+  w.document.write($('#hotel-details').html());
+  w.document.write("<hr/>");
+  w.document.write('<div style="float:right;width:150px">');
+  w.document.write('Invoice Number: ');
+  w.document.write($('#invoice-' + c + ' #invoice_id').val());
+  w.document.write('</div>');
+  w.document.write("Guest Name: ");
+  w.document.write("<b>");
+  w.document.write($('#invoice-' + c + ' .invoice-details #customer_name').val());
+  w.document.write("<h4>Room Charges</h4>");
+  if($('#invoice-' + c + ' .checked_out') != null){
+  $.each( $('#invoice-' + c + ' .checked_out'),  function(key,val){
+  w.document.write("<br/>Checked in Date: ");
+  w.document.write($(val).find(' .checkin-date').html());
+  w.document.write("<table rules=all border=1 cellpadding=5>");
+  w.document.write($(val).find('.room_table').html());
+  w.document.write("</table>");
+  });
+  }
+  w.document.write("</b>");
+  w.document.write("<br/>Checked in Date: ");
+  w.document.write("<b>");
+  w.document.write($('#invoice-' + c + ' .checkin .well.checkin-details .checkin-date').html());
+  w.document.write("</b>");
+  w.document.write("<table rules=all border=1 cellpadding=5>");
+  w.document.write($('#invoice-' + c + ' .checkin .well.checkin-details table').html());
+  w.document.write("</table>");
+  w.document.write("<h4>Total Charges to be Paid: Rs. ");
+  w.document.write($('#invoice-' + c + ' .room_charges').html());
+  w.document.write("</h4>");
+  w.document.write($('.tax-declaration').html());
+  w.document.write("</body></html>");
+  w.print();
+  if($.trim($('#invoice-' + c + ' .checkin .other_charges').text()) != "0"){
+  l = window.open("");
+  l.document.write("<html><head></head><body>");
+  l.document.write($('#hotel-details').html());
+  l.document.write("<hr/>");
+  l.document.write("Guest Name: ");
+  l.document.write("<b>");
+  l.document.write($('#invoice-' + c + ' .checkin .well.checkin-details .customer-name').html());
+  l.document.write("</b>");
+  l.document.write("<br/>Checked in Date: ");
+  l.document.write("<b>");
+  l.document.write($('#invoice-' + c + ' .checkin .well.checkin-details .checkin-date').html());
+  l.document.write("</b>");
+  l.document.write("<h4>Other Charges</h4>");
+  if($('#invoice-' + c + ' .checked_out') != null){
+  $.each( $('#invoice-' + c + ' .checked_out'), function(key,val){
+  $.each( $(val).find('.services'),function(k,v){
+  l.document.write($(v).find('.service_name').html());
+  l.document.write("<table rules=all border=1 cellpadding=5>");
+  l.document.write($(v).find('table').html());
+  l.document.write("</table>");
+  });
+  });
+  }
+  $.each($('#invoice-' + c + ' .checkin .well.services'),function(r,s){
+  l.document.write("<h4>"+ $(s).find('.service-name').html() + "</h4>");
+  l.document.write("<table rules=all border=1 cellpadding=5>");
+  l.document.write($(s).find('table').html());
+  l.document.write("</table>");
+  });
+  l.document.write("<h4>Total Charges to be Paid: Rs. ");
+  l.document.write($('#invoice-' + c + ' .other_charges').html());
+  l.document.write("</h4>");
+  l.document.write("</body></html>");
+  l.print();
+  }
+
+  }
