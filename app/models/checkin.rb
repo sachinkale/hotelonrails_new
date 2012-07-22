@@ -42,7 +42,7 @@ class Checkin < ActiveRecord::Base
 	def tax(rate)
 		if rate < 1200 and rate > 750
 			l_tax = APP_CONFIG['hotel_luxury_tax1'].to_f/100
-		elsif rate > 1200
+		elsif rate >= 1200
 			l_tax = APP_CONFIG['hotel_luxury_tax2'].to_f/100
 		else 
 			l_tax = 0
