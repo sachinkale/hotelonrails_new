@@ -48,13 +48,14 @@ jQuery ->
 		extra_person = parseInt $('.tab-pane.active').find('.extra_person').val()
 		extra_person = 0 if !extra_person 
 
-		actual_rate = parseInt $('.tab-pane.active').find('.rate').val()  + extra_person
+		actual_rate = parseInt($('.tab-pane.active').find('.rate').val())  + extra_person
 		luxury_tax1 = parseFloat $('#luxury_tax_1').text()
 		luxury_tax2 = parseFloat $('#luxury_tax_2').text()
 		service_tax = parseFloat $('#service_tax').text()
-
+		service_tax = 0 if !service_tax
 		actual_rate = 0 if !actual_rate 
 		tax = 0 if !tax 
+		luxury_tax = 0
 
 		if actual_rate > 750 and actual_rate < 1200
 			luxury_tax = parseFloat(luxury_tax1/100)
@@ -65,8 +66,11 @@ jQuery ->
 		if actual_rate < 1000
 			service_tax = 0
 		#calculate total
-		total = actual_rate + (actual_rate * luxury_tax) + (actual_rate * service_tax) 
-
+		total = actual_rate + (actual_rate * luxury_tax) + (actual_rate * service_tax/100) 
+		console.log(actual_rate)
+		console.log(luxury_tax)
+		console.log(service_tax)
+		console.log(total)
 		#update total
 		$('.tab-pane.active').find('.total_per_day').val total
 
