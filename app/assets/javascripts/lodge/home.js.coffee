@@ -29,16 +29,14 @@ jQuery ->
 
 	update_rate_and_calculate_room_total = ->
 		base_rate = parseInt $('.tab-pane.active').find('.base_rate').val()
-		extra_person = parseInt $('.tab-pane.active').find('.extra_person').val()
 		discount =  parseFloat $('.tab-pane.active').find('.discount').val()
 
 		#validate values for NaN
 		base_rate = 0 if !base_rate 
-		extra_person = 0 if !extra_person 
 		discount = 0 if !discount
 
 		#calculate actual rate
-		rate = (base_rate + extra_person) - ((base_rate + extra_person) * discount/100) 
+		rate = (base_rate ) - (base_rate * discount/100) 
 		$('.tab-pane.active').find('.rate').val rate
 
 		#calculate total with tax
@@ -47,15 +45,27 @@ jQuery ->
 	calculate_room_total = ->
 		#read values
 
-		actual_rate = parseInt $('.tab-pane.active').find('.rate').val() 
-		tax = parseFloat $('.tax').text()
+		extra_person = parseInt $('.tab-pane.active').find('.extra_person').val()
+		extra_person = 0 if !extra_person 
+
+		actual_rate = parseInt $('.tab-pane.active').find('.rate').val()  + extra_person
+		luxury_tax1 = parseFloat $('#luxury_tax_1').text()
+		luxury_tax2 = parseFloat $('#luxury_tax_2').text()
+		service_tax = parseFloat $('#service_tax').text()
 
 		actual_rate = 0 if !actual_rate 
 		tax = 0 if !tax 
 
-		
+		if actual_rate > 750 and actual_rate < 1200
+			luxury_tax = parseFloat(luxury_tax1/100)
+		else if actual_rate > 1200
+			luxury_tax = parseFloat(luxury_tax2/100)
+		else
+			luxury_tax = 0
+		if actual_rate < 1000
+			service_tax = 0
 		#calculate total
-		total = actual_rate + (actual_rate * tax/100)
+		total = actual_rate + (actual_rate * luxury_tax) + (actual_rate * service_tax) 
 
 		#update total
 		$('.tab-pane.active').find('.total_per_day').val total
@@ -75,7 +85,7 @@ jQuery ->
 		$('#service_item_form').submit()
 
 	#delete service item
-	$('.delete_service_item').click ->
+	$('.services').on 'click', '.delete_service_item', ->
 		$('#delete_service_item_id').val($(@).parents('tr').attr('id').replace('service_item_',''))
 		$('#delete_service').modal 'show'
 	$('#delete_service_item').click ->
@@ -206,6 +216,7 @@ jQuery ->
 		w.document.write("<h4>Total Charges to be Paid: Rs. ")
 		w.document.write($('#invoice-' + c + ' .room_charges').html())
 		w.document.write("</h4>")
+		w.document.write($('.tax-declaration').html())
 		w.document.write("</body></html>")
 		w.print()
 		if $.trim($('#invoice-' + c + ' .checkin .other_charges').text()) != "0" 
@@ -229,15 +240,11 @@ jQuery ->
 						l.document.write("<table rules=all border=1 cellpadding=5>")
 						l.document.write($(v).find('table').html())
 						l.document.write("</table>")
-			l.document.write("<h4>"+ $($('#invoice-' + c + ' .checkin  .well.services .service-name')[0]).html() + "</h4>")
-			l.document.write("<table rules=all border=1 cellpadding=5>")
-			l.document.write($($('#invoice-' + c + ' .checkin .well.services table')[0]).html())
-			l.document.write("</table>")
-			l.document.write("<h4>"+ $($('#invoice-' + c + ' .well.services .service-name')[1]).html() + "</h4>")
-			l.document.write("<table rules=all border=1 cellpadding=5>")
-			l.document.write($($('#invoice-' + c + ' .checkin .well.services table')[1]).html())
-			l.document.write("</table>")
-
+			$.each $('#invoice-' + c + ' .checkin .well.services'),(r,s) ->
+				l.document.write("<h4>"+ $(s).find('.service-name').html() + "</h4>")
+				l.document.write("<table rules=all border=1 cellpadding=5>")
+				l.document.write($(s).find('table').html())
+				l.document.write("</table>")
 			l.document.write("<h4>Total Charges to be Paid: Rs. ")
 			l.document.write($('#invoice-' + c + ' .other_charges').html())
 			l.document.write("</h4>")

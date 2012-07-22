@@ -33,7 +33,27 @@ class Checkin < ActiveRecord::Base
 
 	#total_per_day 
 	def total_per_day
-		self.rate + self.rate * 0.10 + (self.extra_person||0)
+		r = self.rate + self.extra_person
+		r + (r * self.tax(r)) 
+	end
+
+
+	#tax
+	def tax(rate)
+		if rate < 1200 and rate > 750
+			l_tax = APP_CONFIG['hotel_luxury_tax1'].to_f/100
+		elsif rate > 1200
+			l_tax = APP_CONFIG['hotel_luxury_tax2'].to_f/100
+		else 
+			l_tax = 0
+		end
+
+		if rate > 1000
+			service_tax = APP_CONFIG['hotel_service_tax'].to_f/100
+		else
+			service_tax = 0
+		end
+		l_tax + service_tax
 	end
 
 	#no_of_days

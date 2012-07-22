@@ -33,7 +33,7 @@
           %td
             =c.extra_person
           %td
-            10%
+            =(c.tax * 100).to_s + " %"
           %td
             =c.total_per_day
           %td
@@ -112,7 +112,7 @@
           %td
             =checkin.extra_person
           %td
-            10%
+            =(checkin.tax(checkin.rate) * 100).to_s + " %"
           %td
             =checkin.total_per_day
           %td
