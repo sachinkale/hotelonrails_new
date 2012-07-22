@@ -25,8 +25,7 @@ jQuery ->
 	$('.rate').on 'change', ->
 		calculate_room_total()
 	$('.extra_person').on 'change', ->	
-		update_rate_and_calculate_room_total()
-
+		calculate_room_total()
 	update_rate_and_calculate_room_total = ->
 		base_rate = parseInt $('.tab-pane.active').find('.base_rate').val()
 		discount =  parseFloat $('.tab-pane.active').find('.discount').val()
@@ -67,10 +66,7 @@ jQuery ->
 			service_tax = 0
 		#calculate total
 		total = actual_rate + (actual_rate * luxury_tax) + (actual_rate * service_tax/100) 
-		console.log(actual_rate)
-		console.log(luxury_tax)
-		console.log(service_tax)
-		console.log(total)
+
 		#update total
 		$('.tab-pane.active').find('.total_per_day').val total
 

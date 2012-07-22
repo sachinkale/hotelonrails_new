@@ -6,18 +6,18 @@
     %td
       Total Sale
     %td
-      = (@total_cash || 0)   +  (@total_card || 0 )  + ( @total_debt || 0 ) + (@total_free || 0)
+      = (@cash || 0)   +  (@card || 0 )  + ( @debt || 0 ) + (@free || 0)
   %tr
     %td
       Total Cash
     %td
-      - if @total_cash
-        =link_to @total_cash, "#",:id => "cash"
+      - if @cash
+        =link_to @cash, "#",:id => "cash"
       - else
         0
   %tr.cash.details{:style => "display:none"}
     %td{:colspan => 2}
-      %table
+      %table.table.table-bordered
         %th
           Number
         %th
@@ -26,7 +26,8 @@
           Room
         %th
           Amount
-        -@cash_invoices.each do |t|
+        -@total_cash.each do |i|
+          -t = Invoice.find(i.owner_id) 
           %tr
             %td 
               =t.id
@@ -35,17 +36,17 @@
             %td
               - a = ""
               -t.checkins.each do |c|
-                -a = a + c.room.number + "|"
+                -a = a + c.room.number + ","
               =a
             %td
-              =t.grand_total
+              =i.amount
 
   %tr
     %td
       Total Card
     %td
-      - if @total_card
-        =link_to @total_card, "#",:id => "card"
+      - if @card
+        =link_to @card, "#",:id => "card"
       - else
         0 
   %tr.card.details{:style => "display:none"}
@@ -59,7 +60,8 @@
           Room
         %th
           Amount
-        -@card_invoices.each do |t|
+        -@total_card.each do |i|
+          -t = Invoice.find(i.owner_id) 
           %tr
             %td 
               =t.id
@@ -68,21 +70,19 @@
             %td
               - a = ""
               -t.checkins.each do |c|
-                -a = a + c.room.number + "|"
+                -a = a + c.room.number + ","
               =a
 
             %td
-              =t.grand_total
-            %td
-              =link_to "void", void_ticket_path(t), :method => :put
+              =i.amount
 
 
   %tr
     %td
       Total Debt
     %td
-      - if @total_debt
-        =link_to @total_debt, "#",:id => "debt"
+      - if @debt
+        =link_to @debt, "#",:id => "debt"
       - else
         0
   %tr.debt.details{:style => "display:none"}
@@ -96,7 +96,8 @@
           Room
         %th
           Amount
-        -@debt_invoices.each do |t|
+        -@total_debt.each do |i|
+          -t = Invoice.find(i.owner_id) 
           %tr
             %td 
               =t.id
@@ -105,19 +106,19 @@
             %td
               - a = ""
               -t.checkins.each do |c|
-                -a = a + c.room.number + "|"
+                -a = a + c.room.number + ","
               =a
 
             %td
-              =t.grand_total
+              =i.amount
 
 
   %tr
     %td
       Total Free
     %td
-      - if @total_free
-        =link_to @total_free, "#",:id => "free"
+      - if @free
+        =link_to @free, "#",:id => "free"
       - else
         ="0"
   %tr.free.details{:style => "display:none"}
@@ -131,7 +132,8 @@
           Table
         %th
           Amount
-        -@free_invoices.each do |t|
+        -@total_free.each do |i|
+          -t = Invoice.find(i.owner_id) 
           %tr
             %td 
               =t.id
@@ -140,11 +142,11 @@
             %td
               - a = ""
               -t.checkins.each do |c|
-                -a = a + c.room.number + "|"
+                -a = a + c.room.number + ","
               =a
 
             %td
-              =t.grand_total
+              =i.amount
 
 
 

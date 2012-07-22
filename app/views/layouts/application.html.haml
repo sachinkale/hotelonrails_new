@@ -7,7 +7,7 @@
     %title= content_for?(:title) ? yield(:title) : "Hotelonrails New"
     %meta{:content => "", :name => "description"}
     %meta{:content => "", :name => "author"}
-    - if current_page?(:controller => :admin)
+    - if controller.controller_name == "admin"
       = stylesheet_link_tag "active_admin"
       = javascript_include_tag "active_admin"
     -else
