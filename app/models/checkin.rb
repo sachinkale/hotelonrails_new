@@ -88,16 +88,16 @@ class Checkin < ActiveRecord::Base
 
 	#room_charges_total
 	def total
-		total_per_day * no_of_days
+		(total_per_day * no_of_days).round
 	end
 
 	#other_charges_total
 	def total_other_charges
-		self.service_items.sum(:amount)
+		(self.service_items.sum(:amount)).round
 	end
 
 	def grand_total
-		self.total + self.total_other_charges
+		(self.total + self.total_other_charges).round
 	end
 
 	def checkout

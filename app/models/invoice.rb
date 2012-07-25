@@ -11,7 +11,7 @@ class Invoice < ActiveRecord::Base
 		self.checkins.each do |c|
 			t = t + c.grand_total
 		end
-		return t
+		return t.round
 	end
 
 	def room_total
@@ -19,7 +19,7 @@ class Invoice < ActiveRecord::Base
 		self.checkins.each do |c|
 			t = t + c.total
 		end
-		return t
+		return t.round
 
 	end
 
@@ -28,7 +28,7 @@ class Invoice < ActiveRecord::Base
 		self.checkins.each do |c|
 			t = t + c.total_other_charges
 		end
-		return t
+		return t.round
 
 	end
 	
