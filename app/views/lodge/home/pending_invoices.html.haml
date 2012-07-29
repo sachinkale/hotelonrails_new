@@ -1,0 +1,38 @@
+%h3
+  Pending Invoices
+%table.table.table-bordered
+  %tr
+    %th Invoice ID
+    %th Date
+    %th Rooms
+    %th Customer
+    %th Debt Amount
+  - total = 0
+  - @invoices.each do |i|
+    %tr
+      %td 
+        =i.id
+      %td
+        =i.updated_at.in_time_zone
+      %td
+        - a = ""
+        -i.checkins.each do |c|
+          -a = a + c.room.number + ","
+        =a
+      %td
+        =i.customer.name
+      %td
+        - t = 0
+        - i.payments.each do |p|
+          - if p.payment_method.name == "Debt"
+            - t = t + p.amount
+        - total = total + t
+        = t
+  %tr
+    %th{:colspan => 4} 
+      %b.pull-right Total
+    %th
+      =total
+
+
+

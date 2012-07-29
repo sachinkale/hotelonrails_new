@@ -49,4 +49,11 @@ class Lodge::HomeController < ApplicationController
 		 end
 		 redirect_to lodge_home_list_url
 	end
+
+
+	def pending_invoices
+			@invoices = Invoice.where("status like 'payment pending'")		
+
+
+	end
 end
