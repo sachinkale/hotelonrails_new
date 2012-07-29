@@ -16,7 +16,7 @@ ActiveAdmin.register Invoice do
 			rooms
     end
 		column "Customer" do |invoice|
-			invoice.customer.name
+			invoice.customer.name if not customer.nil?
 		end
 		column "Amount" do |invoice|
 			invoice.grand_total
