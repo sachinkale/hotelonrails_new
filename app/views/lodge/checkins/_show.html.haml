@@ -33,7 +33,7 @@
           %td
             =c.extra_person
           %td
-            =(c.tax * 100).to_s + " %"
+            =(c.tax(c.rate) * 100).to_s + " %"
           %td
             =c.total_per_day
           %td
