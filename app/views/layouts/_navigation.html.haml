@@ -3,4 +3,6 @@
 %ul.nav
   %li{:class => "#{ current_page?(lodge_home_list_url) ? 'active' :''}"} 
     =link_to "Lodge" , lodge_home_list_path
+  %li
+    =link_to "Admin", "/admin", :target => "_blank"
 
