@@ -1,0 +1,21 @@
+%h3
+  Checkin Change
+-if @old_checkin.rate > @new_checkin[:rate]
+  %h4 
+    Rate Change for Room: 
+    =@old_checkin.room.number
+  %b 
+    Old Rate:
+    =@old_checkin.rate
+    &nbsp;New Rate
+    =@new_checkin[:rate]
+    
+-if @old_checkin.from_date < @new_checkin[:from_date]
+  %h4
+    Date Change for Checkin
+  %b 
+    Old Checkin Date
+    =@old_checkin.from_date
+    %nbsp; New Date
+    =@new_checkin[:from_date]
+

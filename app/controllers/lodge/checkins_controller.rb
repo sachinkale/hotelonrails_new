@@ -102,6 +102,9 @@ class Lodge::CheckinsController < ApplicationController
 			date = Date.parse(params[:checkin][:from_date])
 			params[:checkin][:from_date] = Time.local(date.year,date.month,date.day,params[:date][:hour],params[:date][:minute])
 			params[:checkin].delete(:date)
+			if params[:checkin][:rate] < @checkin.rate or params[:checkin][:from_date] > @checkin.from_date
+				SendReport.checkin_change(@checkin,params[:checkin]).deliver
+			end
       @checkin.update_attributes(params[:checkin])
 			format.js
     end
