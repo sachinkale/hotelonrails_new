@@ -186,11 +186,14 @@ jQuery ->
 		
 
 	printCurrent = (c) ->
+		d = new Date()
 		w = window.open("")
 		w.document.write("<html><head></head><body>")
 		w.document.write($('#hotel-details').html())
 		w.document.write("<hr/>")
 		w.document.write('<div style="float:right;width:150px">')
+		w.document.write('Date: ' + d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear() )
+		w.document.write('<br/>')
 		w.document.write('Invoice Number: ')
 		w.document.write($('#invoice-' + c + ' #invoice_id').val())
 		w.document.write('</div>')
@@ -198,7 +201,6 @@ jQuery ->
 		w.document.write("<b>")
 		w.document.write($('#invoice-' + c + ' .invoice-details #customer_name').val())
 		w.document.write("</b><br/>")
-
 		w.document.write("Guest Name: ")
 		w.document.write("<b>")
 		w.document.write($('#invoice-' + c + ' .checkin .well.checkin-details .customer-name').html())
@@ -229,6 +231,10 @@ jQuery ->
 			l.document.write("<html><head></head><body>")
 			l.document.write($('#hotel-details').html())
 			l.document.write("<hr/>")
+			l.document.write('<div style="float:right;width:150px">')
+			l.document.write('Date: ' + d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear() )
+			l.document.write('</div>')
+			l.document.write('<br/>')
 			l.document.write("Bill To: ")
 			l.document.write("<b>")
 			l.document.write($('#invoice-' + c + ' .invoice-details #customer_name').val())
