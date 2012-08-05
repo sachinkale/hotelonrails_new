@@ -145,7 +145,7 @@ jQuery ->
 				$('#print_form').hide()
 				$('#print_dialog .customer-name').html($('#print_form #name').val())
 				c = $('#print_invoice_id').val();
-				$('#invoice-' + c + ' .invoice-details #customer_name ').val($('#print_form #name').val())
+				$('#invoice-' + c  + ' .invoice-details #customer_name ').val($('#print_form #name').val())
 				return false
 			error: ->
 				alert 'updation failed'

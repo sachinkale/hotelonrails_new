@@ -2,75 +2,78 @@
   .invoice-details
     =hidden_field_tag :invoice_id,invoice.id
     =hidden_field_tag :customer_name,invoice.customer.name
-  -invoice.checked_out_checkins.each do |c|
-    %h3 Shifted Room Checkins
-    .checked_out.well{:id => "checked-out-#{c.id}"}
-      %span.pull-right
-        Checked in on:
-        %b.checkin-date=c.from_date.strftime("%d-%m-%y %H:%M")
-      %table.table.table-bordered.room_table
-        %tr
-          %th Room
-          -if c.discount > 0
-            %th Rate 
-            %th Discount
-          %th Applied Rate
-          %th Extra Person
-          %th Tax
-          %th Total Per Day
-          %th No of Days
-          %th Amount
-        %tr
-          %td 
-            =c.room.number
-          -if c.discount > 0
+  -if invoice.checkins.length > 1 
+    - checkins = invoice.checkins
+    - checkins.pop
+    - checkins.each do |c|
+      %h3 Shifted Room Checkins
+      .checked_out.well{:id => "checked-out-#{c.id}"}
+        %span.pull-right
+          Checked in on:
+          %b.checkin-date=c.from_date.strftime("%d-%m-%y %H:%M")
+        %table.table.table-bordered.room_table
+          %tr
+            %th Room
+            -if c.discount > 0
+              %th Rate 
+              %th Discount
+            %th Applied Rate
+            %th Extra Person
+            %th Tax
+            %th Total Per Day
+            %th No of Days
+            %th Amount
+          %tr
+            %td 
+              =c.room.number
+            -if c.discount > 0
+              %td
+                =c.room.room_type.base_rate
+              %td
+                =c.discount.to_s + " %"
             %td
-              =c.room.room_type.base_rate
+              =c.rate
             %td
-              =c.discount.to_s + " %"
-          %td
-            =c.rate
-          %td
-            =c.extra_person
-          %td
-            =(c.tax(c.rate) * 100).to_s + " %"
-          %td
-            =c.total_per_day
-          %td
-            =c.no_of_days
-          %td
-            =c.total
-      %h4 Shifted Room Other Charges
-      - Service.all.each do |s|
-        .services
-          %h4.service_name 
-            =s.name
-          %table.table.table-bordered
-            %tr
-              %th Date
-              %th Bill Number
-              %th Room
-              %th Details
-              %th Amount
-            -c.list_items(s).each do |service_item|
+              =c.extra_person
+            %td
+              =(c.tax(c.rate) * 100).to_s + " %"
+            %td
+              =c.total_per_day
+            %td
+              =c.no_of_days
+            %td
+              =c.total
+        %h4 Shifted Room Other Charges
+        - Service.all.each do |s|
+          .services
+            %h4.service_name 
+              =s.name
+            %table.table.table-bordered
               %tr
-                %td
-                  =service_item.updated_at
-                %td
-                  =service_item.bill_number
-                %td
-                  =service_item.checkin.room.number
-                %td
-                  =service_item.notes
-                %td
-                  =service_item.amount
+                %th Date
+                %th Bill Number
+                %th Room
+                %th Details
+                %th Amount
+              -c.list_items(s).each do |service_item|
+                %tr
+                  %td
+                    =service_item.updated_at
+                  %td
+                    =service_item.bill_number
+                  %td
+                    =service_item.checkin.room.number
+                  %td
+                    =service_item.notes
+                  %td
+                    =service_item.amount
 
-          .total.pull-right
-            =s.name
-            Total:
-            %b.service_total
-              =c.list_item_total(s)
-       
+            .total.pull-right
+              =s.name
+              Total:
+              %b.service_total
+                =c.list_item_total(s)
+         
 
 
   .checkin{:id => "checkin-#{checkin.id}"}
