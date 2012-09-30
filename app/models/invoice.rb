@@ -8,15 +8,15 @@ class Invoice < ActiveRecord::Base
 
 	def grand_total
 		t = 0
-		self.checkins.each do |c|
-			t = t + c.grand_total
+		checkins.each do |c1|
+			t = t + c1.grand_total
 		end
 		return t.round
 	end
 
 	def room_total
 		t = 0
-		self.checkins.each do |c|
+		checkins.each do |c|
 			t = t + c.total
 		end
 		return t.round
@@ -25,7 +25,7 @@ class Invoice < ActiveRecord::Base
 
 	def total_other_charges
 		t = 0
-		self.checkins.each do |c|
+		checkins.each do |c|
 			t = t + c.total_other_charges
 		end
 		return t.round
@@ -33,6 +33,6 @@ class Invoice < ActiveRecord::Base
 	end
 	
 	def checked_out_checkins
-		self.checkins.where("status like 'Checked Out'")
+		checkins.where("status like 'Checked Out'")
 	end
 end

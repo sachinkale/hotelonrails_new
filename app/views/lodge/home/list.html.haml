@@ -190,6 +190,30 @@
 
     =hidden_field_tag "print_invoice_id"
     =hidden_field_tag :print_checkin_id 
+    %br
+    .row-fluid
+      .span1
+        =check_box_tag "include_summary"
+      .span3
+        %label Include Summary
+ 
+    .row-fluid
+      .span1
+        =check_box_tag "include_payments"
+      .span3
+        %label Include Payments
+
+    .row-fluid
+      .span1
+        =check_box_tag "print_other_charges"
+      .span4
+        %label Print Detail Other Changes
+    .row-fluid
+      .span1
+        =check_box_tag "include_checkout_date"
+      .span4
+        %label Include Checkout date as now
+
   .modal-footer
     =image_tag "smallloading.gif",:class => "pull-left hide", :id => "add_payment_loader"
     %a.btn{"data-dismiss" => "modal"} Cancel

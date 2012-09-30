@@ -3,14 +3,16 @@
     =hidden_field_tag :invoice_id,invoice.id
     =hidden_field_tag :customer_name,invoice.customer.name
   -if invoice.checkins.length > 1 
-    - checkins = invoice.checkins
-    - checkins.pop
+    - checkins = invoice.checked_out_checkins
     - checkins.each do |c|
       %h3 Shifted Room Checkins
       .checked_out.well{:id => "checked-out-#{c.id}"}
         %span.pull-right
           Checked in on:
           %b.checkin-date=c.from_date.strftime("%d-%m-%y %H:%M")
+          %br
+          Checked out at:
+          %b.checkout-date=c.checkout_date.strftime("%d-%m-%y %H:%M")
         %table.table.table-bordered.room_table
           %tr
             %th Room

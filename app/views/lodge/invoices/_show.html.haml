@@ -1,0 +1,120 @@
+.invoice.span8{:id => "invoice-#{invoice.id}"}
+  .invoice-details
+    %h4 
+      Invoice ID:
+      =invoice.id
+    %h4 
+      Guest Name:
+      =invoice.customer.name
+    =hidden_field_tag :invoice_id,invoice.id
+    =hidden_field_tag :customer_name,invoice.customer.name
+  -invoice.checkins.each do |c|
+    .checked_out.well{:id => "checked-out-#{c.id}"}
+      %span.pull-right
+        Checked in on:
+        %b.checkin-date=c.from_date.strftime("%d-%m-%y %H:%M")
+        -if not c.checkout_date.nil?
+          %br
+          Checked out on:
+          %b.checkout-date=c.checkout_date.strftime("%d-%m-%y %H:%M")
+      %table.table.table-bordered.room_table
+        %tr
+          %th Room
+          -if c.discount > 0
+            %th Rate 
+            %th Discount
+          %th Applied Rate
+          %th Extra Person
+          %th Tax
+          %th Total Per Day
+          %th No of Days
+          %th Amount
+        %tr
+          %td 
+            =c.room.number
+          -if c.discount > 0
+            %td
+              =c.room.room_type.base_rate
+            %td
+              =c.discount.to_s + " %"
+          %td
+            =c.rate
+          %td
+            =c.extra_person
+          %td
+            =(c.tax(c.rate) * 100).to_s + " %"
+          %td
+            =c.total_per_day
+          %td
+            =c.no_of_days
+          %td
+            =c.total
+      %h3 Other Charges
+    - Service.all.each do |s|
+      .well.services{:id => "service-#{s.id}"}
+        %h4
+          %span.service-name=s.name
+        %table.table.table-bordered
+          %tr
+            %th
+            %th Date
+            %th Bill Number
+            %th Room
+            %th Details
+            %th Amount
+          =render :partial => "lodge/service_items/service_item", :collection => c.list_items(s)
+        .total.pull-right
+          =s.name
+          Total:
+          %b.service_total
+            =c.list_item_total(s)
+
+  %h3 Payments
+  .well.payments
+    %table.table.table-bordered
+      %tr
+        %th
+        %th Date
+        %th Payment
+        %th Amount
+      -invoice.payments.each do |p|
+        %tr.payment_row{:id=>"#{p.id}"}
+          %td
+            =link_to payment_path(p.id), :method => :delete, :remote => true do
+              %i.icon-remove
+          %td
+            =p.updated_at
+          %td
+            =p.payment_method.name
+          %td
+            =p.amount
+    .total.pull-right
+      Payments Total:
+      %b.total_payments
+        =invoice.payments.sum(:amount)
+
+  %h3 Total 
+  .well.total_charges
+    %table.table.table-bordered
+      %tr
+        %th Room Charges
+        %td.room_charges
+          =invoice.room_total
+      %tr
+        %th Other Charges
+        %td.other_charges
+          =invoice.total_other_charges
+      %tr
+        %th Total Charges
+        %td.grand_total
+          =invoice.grand_total
+      %tr
+        %th Total Payments
+        %td.total_payments
+          =invoice.payments.sum(:amount)
+      %tr
+        %th Total Pending
+        %td.total_pending
+          =invoice.grand_total - invoice.payments.sum(:amount)
+
+

@@ -61,17 +61,18 @@ class Checkin < ActiveRecord::Base
 		n = 0
  		if self.status.nil?
 			n = n + (Date.today - from_date.to_date).to_i
-			todate = Date.today
+			todate = Time.now
 		else
 			n = n + (self.checkout_date.to_date - from_date.to_date).to_i
-			todate = self.checkout_date
+			todate = self.checkout_date.in_time_zone
 		end
 
-		n = 1 if n == 0
 
  	  n = n + 1 if self.from_date.to_time.in_time_zone.hour < APP_CONFIG['hotel_checkout_hour'] 
 
-    n = n + 1 if not self.checkout_date.nil? and  self.checkout_date.to_time.in_time_zone.hour > APP_CONFIG['hotel_checkout_hour'] 
+    n = n + 1 if todate.in_time_zone.hour > APP_CONFIG['hotel_checkout_hour'] 
+		
+		n = 1 if n == 0
 
 		return n 
 	end
